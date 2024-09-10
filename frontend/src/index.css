@@ -1,0 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/font/Montserrat-Regular.ttf') format('ttf'),
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+:root{
+  --primary-color: #ab1c1c;
+  --secondary-color: #FFE047;
+}
+
+img {
+  width:100%;
+}
+
+.header{
+  background-color: var(--primary-color);
+  color:white;
+}
+
+.HomeCarousel img{
+  height: calc(100vh);
+  object-fit: cover;
+}
+
+.content-carousel{
+  position: absolute;
+  top:300px;
+  left:200px;
+} 
