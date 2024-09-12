@@ -1,6 +1,6 @@
 function Event() {
     return (  
-        <h1>Event</h1>
+        <h1>EventPageeeeeeee</h1>
     );
 }
 

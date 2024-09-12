@@ -1,6 +1,7 @@
-
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ticket from '../../assets/img/ticket.png'
+import ModalLogin from '../Modals/ModalLogin';
 
 function Header() {
     const item_nav = [
@@ -22,6 +23,11 @@ function Header() {
         },
     ]
 
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     return (
         <nav className="header">
             <div className="container mx-auto d-flex justify-between items-center">
@@ -34,7 +40,7 @@ function Header() {
                     ))}
                 </ul>
                 <div className="d-flex gap-3">
-                    <button className="">Login</button>
+                    <ModalLogin show={show} handleShow={handleShow} handleClose={handleClose} />
                     <button className="px-3 py-2 bg-yellow-400 rounded-full text-black ">Sign Up</button>
                 </div>
 
