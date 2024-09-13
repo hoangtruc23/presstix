@@ -1,7 +1,25 @@
+import { useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { baseAPI } from '../../api/axiosInstance'
+
 
 function ModalLogin(props) {
     const { show, handleClose, handleShow } = props;
+
+    const handleBtnLogin = () => {
+        console.log('Login');
+    }
+
+    const authorizationAuth = async () => {
+        const res = await baseAPI.get('api/auth/login');
+        console.log({res});
+        
+    }
+
+    useEffect(()=>{
+        authorizationAuth()
+    },[])
+
 
     return (
         <div>
@@ -31,7 +49,7 @@ function ModalLogin(props) {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button>Login</Button>
+                    <Button onClick={handleBtnLogin}>Login</Button>
                 </Modal.Footer>
             </Modal>
         </div>
