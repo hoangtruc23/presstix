@@ -1,0 +1,104 @@
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .ticketImage {
+        width: 100%;
+        height: auto;
+    }
+
+    .eventTitle {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-top: 1rem;
+    }
+
+    .eventDetails {
+        display: flex;
+        gap: 1.25rem;
+        margin-top: 1rem;
+
+        .eventInfo {
+            width: 50%;
+
+            h3 {
+                font-size: 1.125rem;
+            }
+        }
+
+        .priceSection {
+            flex: 1;
+
+            hr {
+                margin: 0.5rem 0;
+            }
+
+            h4 {
+                font-weight: 600;
+            }
+
+            .bookButton {
+                width: 100%;
+                margin-top: 0.5rem;
+
+                .btn {
+                    display: inline-block;
+                    padding: 0.5rem 1rem;
+                    border-radius: 0.375rem;
+                    text-align: center;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease, color 0.3s ease;
+
+                    &-primary {
+                        background-color: #007bff;
+                        color: #ffffff;
+
+                        &:hover {
+                            background-color: #0056b3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .infoSections {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+
+        .hostEventSection {
+
+            width: 70%;
+            column-width: 10;
+
+            .sectionContent {
+                background-color: #ffffff;
+                padding: 1rem;
+                margin-top: 1rem;
+                border: 1px solid #e0e0e0;
+                border-radius: 0.375rem;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        .promotionalAdSection {
+            width: 30%;
+            column-width: 4;
+
+            .sectionContent {
+                background-color: #C8C2E0;
+                padding: 1rem;
+                margin-top: 1rem;
+                border: 1px solid #e0e0e0;
+                border-radius: 0.375rem;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+}

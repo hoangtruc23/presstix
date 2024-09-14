@@ -1,6 +1,8 @@
+import EventTitle from "../../components/EventTitle/EventTitle";
+
 function Event() {
-    return (  
-        <h1>EventPageeeeeeee</h1>
+    return (
+        <EventTitle />
     );
 }
 
