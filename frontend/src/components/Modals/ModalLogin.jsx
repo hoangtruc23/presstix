@@ -1,32 +1,49 @@
-import { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { baseAPI } from '../../utils/axiosInstance'
-
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { isEmpty } from 'lodash';
+import { postLoginWithEmailPass } from '../../services/apiService'
+import { loginSuccess } from '../../redux/authReducer';
 
 function ModalLogin(props) {
     const { show, handleClose, handleShow } = props;
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+    const dispatch = useDispatch();
 
     const handleBtnLogin = () => {
-        console.log('Login');
+        if (isEmpty(email) || isEmpty(password) == null) {
+            toast.warning('Vui lòng nhập thông tin đăng nhập');
+        } else {
+            LoginWithUserPass();
+        }
     }
 
-    const authorizationAuth = async () => {
-        const res = await baseAPI.get('api/auth/login');
-        console.log({res});
-        
+    const LoginWithUserPass = async () => {
+        event.preventDefault();
+        try {
+            const res = await postLoginWithEmailPass(email, password);
+            if (res.data.success) {
+                toast.success(res.data.message);
+                dispatch(loginSuccess(res.data))
+                handleClose();
+            }else{
+                toast.error(res.data.message);
+            }
+        } catch (error) {
+            toast.error('Đăng nhập thất bại');
+            console.error(error);
+        }
     }
-
-    useEffect(()=>{
-        authorizationAuth()
-    },[])
-
 
     return (
         <div>
             <Button className="bg-transparent border-0" onClick={handleShow}>
                 Login
             </Button>
-
             <Modal
                 show={show}
                 onHide={handleClose}
@@ -37,11 +54,11 @@ function ModalLogin(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Control type="email" placeholder="name@gmail.com" />
+                        <Form.Group className="mb-3">
+                            <Form.Control name='email' onChange={(e) => setEmail(() => e.target.value)} type="email" placeholder="name@gmail.com" />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                            <Form.Control type="email" placeholder="********" />
+                        <Form.Group className="mb-3" >
+                            <Form.Control name='password' onChange={(e) => setPassword(() => e.target.value)} type="password" placeholder="********" />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -55,5 +72,11 @@ function ModalLogin(props) {
         </div>
     )
 }
+
+ModalLogin.propTypes = {
+    show: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    handleShow: PropTypes.func.isRequired,
+};
 
 export default ModalLogin
