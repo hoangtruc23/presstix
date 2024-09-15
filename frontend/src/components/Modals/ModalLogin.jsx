@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { baseAPI } from '../../api/axiosInstance'
+import { baseAPI } from '../../utils/axiosInstance'
 
 
 function ModalLogin(props) {
