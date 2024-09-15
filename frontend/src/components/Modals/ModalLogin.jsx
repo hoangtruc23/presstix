@@ -1,25 +1,38 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { baseAPI } from '../../api/axiosInstance'
-
+import { postLoginWithEmailPass } from '../../services/apiService'
+// import { useDispatch } from 'react-redux';
+// import { doLogin } from '../../services/apiService'
 
 function ModalLogin(props) {
     const { show, handleClose, handleShow } = props;
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [status, setStatus] = useState();
+
+   
 
     const handleBtnLogin = () => {
-        console.log('Login');
+        LoginWithUserPass();
     }
 
-    const authorizationAuth = async () => {
-        const res = await baseAPI.get('api/auth/login');
-        console.log({res});
-        
+    const LoginWithUserPass = async () => {
+        try {
+            const res = await postLoginWithEmailPass(email, password);
+            if (res.data.success) {
+                setStatus(res.data.success);
+                // dispatch(doLogin(res.data))
+
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    useEffect(()=>{
-        authorizationAuth()
-    },[])
-
+    if (status) {
+        handleClose();
+        return;
+    }
 
     return (
         <div>
@@ -37,11 +50,11 @@ function ModalLogin(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Control type="email" placeholder="name@gmail.com" />
+                        <Form.Group className="mb-3">
+                            <Form.Control name='email' onChange={(e) => setEmail(() => e.target.value)} type="email" placeholder="name@gmail.com" />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                            <Form.Control type="email" placeholder="********" />
+                        <Form.Group className="mb-3" >
+                            <Form.Control name='password' onChange={(e) => setPassword(() => e.target.value)} type="password" placeholder="********" />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
