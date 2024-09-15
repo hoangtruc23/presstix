@@ -1,37 +1,42 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { isEmpty } from 'lodash';
 import { postLoginWithEmailPass } from '../../services/apiService'
-// import { useDispatch } from 'react-redux';
-// import { doLogin } from '../../services/apiService'
+import { loginSuccess } from '../../redux/authReducer';
 
 function ModalLogin(props) {
     const { show, handleClose, handleShow } = props;
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [status, setStatus] = useState();
 
-   
+    const dispatch = useDispatch();
 
     const handleBtnLogin = () => {
-        LoginWithUserPass();
-    }
-
-    const LoginWithUserPass = async () => {
-        try {
-            const res = await postLoginWithEmailPass(email, password);
-            if (res.data.success) {
-                setStatus(res.data.success);
-                // dispatch(doLogin(res.data))
-
-            }
-        } catch (error) {
-            console.error(error);
+        if (isEmpty(email) || isEmpty(password) == null) {
+            toast.warning('Vui lòng nhập thông tin đăng nhập');
+        } else {
+            LoginWithUserPass();
         }
     }
 
-    if (status) {
-        handleClose();
-        return;
+    const LoginWithUserPass = async () => {
+        event.preventDefault();
+        try {
+            const res = await postLoginWithEmailPass(email, password);
+            if (res.data.success) {
+                toast.success(res.data.message);
+                dispatch(loginSuccess(res.data))
+                handleClose();
+            }else{
+                toast.error(res.data.message);
+            }
+        } catch (error) {
+            toast.error('Đăng nhập thất bại');
+            console.error(error);
+        }
     }
 
     return (
@@ -39,7 +44,6 @@ function ModalLogin(props) {
             <Button className="bg-transparent border-0" onClick={handleShow}>
                 Login
             </Button>
-
             <Modal
                 show={show}
                 onHide={handleClose}
@@ -68,5 +72,11 @@ function ModalLogin(props) {
         </div>
     )
 }
+
+ModalLogin.propTypes = {
+    show: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    handleShow: PropTypes.func.isRequired,
+};
 
 export default ModalLogin

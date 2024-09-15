@@ -25,6 +25,12 @@ img {
 .header{
   background-color: var(--primary-color);
   color:white;
+  #dropdown-basic-button{
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+  }
 }
 
 .HomeCarousel img{

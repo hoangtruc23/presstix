@@ -1,10 +1,10 @@
-import { baseAPI } from '../utils/axiosInstance'
+import baseAPI from '../utils/axiosInstance'
 
-const postLoginWithEmailPass = (email, pass) => {
-    return baseAPI.post('api/auth/login',[
+const postLoginWithEmailPass = (email, password) => {
+    return baseAPI.post('api/auth/login', {
         email,
-        pass,
-    ]);
+        password,
+    });
 }
 
-export { postLoginWithEmailPass };
+export { postLoginWithEmailPass }
