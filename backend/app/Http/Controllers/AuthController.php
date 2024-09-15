@@ -17,12 +17,15 @@ class AuthController extends Controller
  
         $status = Auth::attempt(['email' => $email, 'password' => $password]);
         if($status){
-            // Taọ token 
+            // Create token 
             $token = $request->user()->createToken('auth');
+            
+            $user = $request->user();
 
             return response()->json([
                 'success' => true,
                 'token' => $token->plainTextToken,
+                'user' => ['name' => $user->name],
                 'message' => "Đăng nhập thành công"
             ]);
         }
