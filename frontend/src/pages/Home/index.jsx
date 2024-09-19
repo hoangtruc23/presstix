@@ -1,6 +1,6 @@
 import BtnSeeMore from "../../components/Button/BtnSeeMore"
 import HomeCarousel from "../../components/Carousel/HomeCarousel"
-import ListCate from "../../components/Cate/ListCate"
+import CarouselEventCate from "../../components/Event/CarouselEventCate"
 import ListEvents from "../../components/Event/ListEvents"
 
 
@@ -11,8 +11,8 @@ function HomePage() {
       <HomeCarousel />
       <div className="w-[80%] mx-auto px-4">
         <div className="my-[50px]">
-          <h1 className="text-[32px]">Explore Categories</h1>
-          <ListCate />
+          <h1 className="text-[32px] mb-5">Explore Categories</h1>
+          <CarouselEventCate />
         </div>
         <div className="my-[50px]">
           <h1 className="text-[32px]">Popular Events in Mumbai</h1>

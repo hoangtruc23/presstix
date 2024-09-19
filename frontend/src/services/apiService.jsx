@@ -7,4 +7,12 @@ const postLoginWithEmailPass = (email, password) => {
     });
 }
 
-export { postLoginWithEmailPass }
+const getEventCate = () => {
+    return baseAPI.get(`api/event-cate`);
+}
+
+const getAllEvent = () => {
+    return baseAPI.get(`api/events`);
+}
+
+export { postLoginWithEmailPass,getEventCate,getAllEvent }
