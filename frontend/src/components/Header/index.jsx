@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown } from 'react-bootstrap'
@@ -6,7 +6,6 @@ import ticket from '../../assets/img/ticket.png'
 import ModalLogin from '../Modals/ModalLogin';
 import {logoutSuccess} from '../../redux/authReducer'
 import { toast } from 'react-toastify';
-
 function Header() {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const account = useSelector(state => state.auth.account);
@@ -31,6 +30,7 @@ function Header() {
     ]
 
     const [show, setShow] = useState(false);
+    const [offset, setOffset] = useState(0);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -41,8 +41,17 @@ function Header() {
         };
         
     }
+
+    useEffect(() => {
+        const onScroll = () => setOffset(window.scrollY);
+       
+        window.removeEventListener('scroll', onScroll);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
     return (
-        <nav className="header">
+        <nav className={`header ${offset >= 250 ? 'active-header animate__animated animate__fadeInDown' : ''}`}>
             <div className="container mx-auto d-flex justify-between items-center">
                 <a className="navbar-brand" href="#">
                     <img src={ticket} alt="Logo" style={{ width: '100px' }} />

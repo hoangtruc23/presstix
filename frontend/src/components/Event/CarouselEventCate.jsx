@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Slider from "react-slick";
 import cateimg from '../../assets/img/cate.png'
 import { getEventCate } from '../../services/apiService';
-import './event_component.scss'
+
 
 
 function CarouselEventCate() {
@@ -30,10 +30,10 @@ function CarouselEventCate() {
     return (
         <Slider {...settings} className='slick-event-cate'>
             {listCates.map((cate, index) => (
-                <div key={index} className='d-flex flex-col items-center'>
+                <div key={index} className='d-flex flex-col items-center text-center'>
                     <img src={cateimg} className="w-[150px]" />
                     <p className="my-4">{cate?.name}</p>
-                </div>
+                </div>  
             ))}
         </Slider>
     )

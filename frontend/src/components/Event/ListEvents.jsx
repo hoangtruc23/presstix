@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import ticket from '../../assets/img/ticket.png';
+import event1 from '../../assets/img/event1.webp';
 import { getAllEvent } from '../../services/apiService';
+import './event_component.scss'
 
 function ListEvents() {
     const [listEvents, setListEvents] = useState([]);
@@ -19,16 +20,14 @@ function ListEvents() {
         fetchDataEvents();
     }, []);
 
-
     return (
-        <div className="d-flex justify-center gap-3 flex-wrap">
+        <div className="d-flex justify-center gap-[30px] flex-wrap">
             {listEvents.map((event, index) => (
-                <div key={index} className="w-[32%]">
-                    <img src={ticket} alt="Event" />
-                    <div className="d-flex gap-5">
-                        <div className='w-[20%]'>
+                <div key={index} className="w-[30%] info-event-home rounded-md">
+                    <img src={event1} alt="Event" />
+                    <div className="d-flex gap-3 p-[10px]">
+                        <div className='w-[20%] text-center font-semibold'>
                             <h3>{moment(event?.time_start).format('DD-MM')}</h3>
-
                         </div>
                         <div>
                             <h4>{event?.name}</h4>
