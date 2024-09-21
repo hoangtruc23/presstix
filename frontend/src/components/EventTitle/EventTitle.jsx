@@ -3,7 +3,8 @@ import ticket from '../../assets/img/ticket.png';
 import InforEvent from '../InforEvent/InforEvent';
 import HostEvent from '../HostEvent/HostEvent';
 import PromotionalAd from '../PromotionnalAd/PromotionalAd';
-import './EventTitle.scss';  // Import the SCSS file
+import EventOther from '../EventOther/EventOther';
+import './EventTitle.scss';
 
 function EventTitle() {
     const info_ticket = [
@@ -58,6 +59,9 @@ function EventTitle() {
                                 <PromotionalAd />
                             </div>
                         </div>
+                    </div>
+                    <div className="event-other">
+                        <EventOther />
                     </div>
                 </div>
             ))}
