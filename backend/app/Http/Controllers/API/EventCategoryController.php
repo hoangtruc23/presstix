@@ -1,33 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\User;
-use App\Http\Resources\UserResource;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\EventCategoryResource;
+use App\Models\EventCategory;
 
-
-
-class UserController extends Controller
+class EventCategoryController extends Controller
 {
-    protected $user;
-
-    public function __construct(User $user)
-    {
-        $this->user = $user;
+    protected $event_cate;
+    public function __construct(EventCategory $event_cate){
+        $this->event_cate = $event_cate;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // $users = $this->user->paginate(5);
-        $users = User::all();
-        $usersResource = UserResource::collection($users);
-
+        $event_cate = EventCategory::all();
+        $event_cateResource = EventCategoryResource::collection($event_cate);
         return response()->json([
-            'data' => $usersResource,
+            'data' => $event_cateResource,
         ],Response::HTTP_OK);
     }
 

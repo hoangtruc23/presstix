@@ -1,75 +1,49 @@
-
-import ticket from '../../assets/img/ticket.png'
+import { useState, useEffect } from 'react';
+import moment from 'moment';
+import event1 from '../../assets/img/event1.webp';
+import { getAllEvent } from '../../services/apiService';
+import './event_component.scss'
+import { Link } from 'react-router-dom';
 
 function ListEvents() {
+    const [listEvents, setListEvents] = useState([]);
 
-    const info_ticket = [
-        {
-            date: '25-26',
-            title: 'Lakeside Camping at Pawna',
-            venue: 'Venue',
-            interested: 10,
-            price: 200,
-        },
-        {
-            date: '25-26',
-            title: 'Lakeside Camping at Pawna',
-            venue: 'Venue',
-            interested: 10,
-            price: 200,
-        },
-        {
-            date: '25-26',
-            title: 'Lakeside Camping at Pawna',
-            venue: 'Venue',
-            interested: 10,
-            price: 200,
-        },
-        {
-            date: '25-26',
-            title: 'Lakeside Camping at Pawna',
-            venue: 'Venue',
-            interested: 10,
-            price: 200,
-        },
-        {
-            date: '25-26',
-            title: 'Lakeside Camping at Pawna',
-            venue: 'Venue',
-            interested: 10,
-            price: 200,
-        },
-        {
-            date: '25-26',
-            title: 'Lakeside Camping at Pawna',
-            venue: 'Venue',
-            interested: 10,
-            price: 200,
-        },
-    ]
+    const fetchDataEvents = async () => {
+        try {
+            const res = await getAllEvent();
+            setListEvents(res.data.data);
+        } catch (error) {
+            console.error('Failed to fetch events:', error);
+        }
+    };
 
-
+    useEffect(() => {
+        fetchDataEvents();
+    }, []);
 
     return (
-        <div className="d-flex justify-center gap-3 flex-wrap">
-            {info_ticket.map((item, index) => (
-                <div key={index} className="w-[32%]" >
-                    <img src={ticket} />
-                    <div className="d-flex gap-5">
-                        <div className='w-[20%]' >
-                            <h3>{item.date}</h3>
+        <div className="d-flex justify-center gap-[30px] flex-wrap">
+            {listEvents.map((event, index) => (
+                <Link to={`/event-detail/${event?.slug}`} key={index} className='w-[30%] info-event-home rounded-md'>
+                    <img src={event1} alt="Event" />
+                    <div className="d-flex gap-3 p-[10px]">
+                        <div className='w-[20%] text-center font-semibold'>
+                            <h3>{moment(event?.time_start).format('DD-MM')}</h3>
                         </div>
                         <div>
-                            <h4>{item.title}</h4>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis, qui.</p>
-                            <p>8:30 - 7:30</p>
+                            <h4>{event?.name}</h4>
+                            <div className='flex items-center gap-1'>
+                                <h3>{moment(event?.time_start).format('HH:mm')}</h3>
+                                <span>-</span>
+                                <h3>{moment(event?.time_end).format('HH:mm')}</h3>
+                            </div>
                             <p>interested</p>
                         </div>
                     </div>
-                </div>
+                </Link>
             ))}
         </div>
-    )
+    );
 }
 
-export default ListEvents
+export default ListEvents;

@@ -5,6 +5,7 @@ import About from "../pages/About/index.jsx";
 import Event from "../pages/Event/index.jsx";
 import Contact from "../pages/Contact/index.jsx";
 import HomePage from "../pages/Home/index.jsx";
+import EventDetail from "../pages/Detail/EventDetail.jsx";
 
 
 
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
             {
                 path: "/contact",
                 element: <Contact />
+            },
+            {
+                path: `/event-detail/:id`,
+                element: <EventDetail />
             },
         ],
     },
