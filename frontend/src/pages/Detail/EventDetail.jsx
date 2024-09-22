@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap';
 import ModalBooking from '../../components/Modals/ModalBooking';
 import TicketTable from '../../components/Tables/TicketTable';
 import { getEventDetail } from '../../services/apiService'
+import HostEvent from '../../components/Event/HostEvent';
 
 
 function EventDetail() {
@@ -55,8 +56,7 @@ function EventDetail() {
             <h2 >Event Description</h2>
           </div>
           <div className='min-h-[250px]'>
-            <h2>Ban tổ chức</h2>
-
+              <HostEvent/>
           </div>
           <div className='min-h-[150px]'>
             <h2>Thẻ</h2>
@@ -76,6 +76,7 @@ function EventDetail() {
             />
           </div>
         </div>
+       
       </div>
     </div>
   )

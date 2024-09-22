@@ -30,7 +30,7 @@ function ListEvents() {
                         <div className='w-[20%] text-center font-semibold'>
                             <h3>{moment(event?.time_start).format('DD-MM')}</h3>
                         </div>
-                        <div>
+                        <div className='w-[80%]'>
                             <h4>{event?.name}</h4>
                             <div className='flex items-center gap-1'>
                                 <h3>{moment(event?.time_start).format('HH:mm')}</h3>
