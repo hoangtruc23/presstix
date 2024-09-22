@@ -8,11 +8,15 @@ const postLoginWithEmailPass = (email, password) => {
 }
 
 const getEventCate = () => {
-    return baseAPI.get(`api/event-cate`);
+    return baseAPI.get(`event-cate`);
 }
 
 const getAllEvent = () => {
-    return baseAPI.get(`api/events`);
+    return baseAPI.get(`events`);
 }
 
-export { postLoginWithEmailPass,getEventCate,getAllEvent }
+const getEventDetail = (slug) => {
+    return baseAPI.get(`event/${slug}`);
+}
+
+export { postLoginWithEmailPass,getEventCate,getAllEvent,getEventDetail }

@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown } from 'react-bootstrap'
 import ticket from '../../assets/img/ticket.png'
@@ -10,6 +10,9 @@ function Header() {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const account = useSelector(state => state.auth.account);
     const dispatch = useDispatch();
+    const location = useLocation();
+    const isHomePage = location.pathname === '/';
+
     const item_nav = [
         {
             path: '/',
@@ -51,11 +54,11 @@ function Header() {
     }, []);
 
     return (
-        <nav className={`header ${offset >= 250 ? 'active-header animate__animated animate__fadeInDown' : ''}`}>
+        <nav className={`header ${isHomePage ? 'h-fixed' : ''} ${offset >= 250 ? 'active-header animate__animated animate__fadeInDown' : ''}`}>
             <div className="container mx-auto d-flex justify-between items-center">
-                <a className="navbar-brand" href="#">
+                <Link className="navbar-brand" href="/">
                     <img src={ticket} alt="Logo" style={{ width: '100px' }} />
-                </a>
+                </Link>
                 <ul className="d-flex gap-3 text-center">
                     {item_nav.map((item, index) => (
                         <Link to={item.path} key={index} className="w-[100px] tracking-wide uppercase py-[20px] border-b-2 border-transparent hover:border-white duration-500 transition-all">{item.title}</Link>

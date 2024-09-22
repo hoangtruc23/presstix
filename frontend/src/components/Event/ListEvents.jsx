@@ -3,6 +3,7 @@ import moment from 'moment';
 import event1 from '../../assets/img/event1.webp';
 import { getAllEvent } from '../../services/apiService';
 import './event_component.scss'
+import { Link } from 'react-router-dom';
 
 function ListEvents() {
     const [listEvents, setListEvents] = useState([]);
@@ -23,7 +24,7 @@ function ListEvents() {
     return (
         <div className="d-flex justify-center gap-[30px] flex-wrap">
             {listEvents.map((event, index) => (
-                <div key={index} className="w-[30%] info-event-home rounded-md">
+                <Link to={`/event-detail/${event?.slug}`} key={index} className='w-[30%] info-event-home rounded-md'>
                     <img src={event1} alt="Event" />
                     <div className="d-flex gap-3 p-[10px]">
                         <div className='w-[20%] text-center font-semibold'>
@@ -39,7 +40,7 @@ function ListEvents() {
                             <p>interested</p>
                         </div>
                     </div>
-                </div>
+                </Link>
             ))}
         </div>
     );

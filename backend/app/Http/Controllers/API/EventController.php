@@ -52,9 +52,14 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        $event = Event::where('slug', $slug)->first();
+        if (!$event) {
+            abort(404, 'Event not found');
+        }
+
+        return response()->json($event,Response::HTTP_OK);
     }
 
     /**

@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->get('/auth/profile',[AuthController::class,'p
 // EVENT 
 Route::get('/event-cate',[EventCategoryController::class,'index']);
 Route::get('/events',[EventController::class,'index']);
+Route::get('/event/{slug}',[EventController::class,'show'])->name('event.show');
