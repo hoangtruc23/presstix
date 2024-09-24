@@ -7,8 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { store, persistor } from './redux/store'
 import router from './route'
 import './index.scss'
-
-
+import './assets/js/main.js'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

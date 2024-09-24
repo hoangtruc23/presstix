@@ -5,7 +5,7 @@ import { getEventCate } from '../../services/apiService';
 
 
 
-function CarouselEventCate() {
+function CarouselItems() {
     const [listCates, setListCates] = useState([]);
 
     const fetchEventCate = async () => {
@@ -39,4 +39,4 @@ function CarouselEventCate() {
     )
 }
 
-export default CarouselEventCate
+export default CarouselItems

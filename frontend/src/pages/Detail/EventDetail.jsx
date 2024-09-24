@@ -2,25 +2,22 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import event1 from '../../assets/img/event1.webp';
-import { Button } from 'react-bootstrap';
-import ModalBooking from '../../components/Modals/ModalBooking';
 import TicketTable from '../../components/Tables/TicketTable';
 import { getEventDetail } from '../../services/apiService'
 import HostEvent from '../../components/Event/HostEvent';
+// import CarouselItems from '../../components/Carousel/CarouselItems';
 
 
 function EventDetail() {
   const slug = useParams();
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
 
   const [eventDetail, setEventDetail] = useState();
 
   const fetchEventDetail = async () => {
     const res = await getEventDetail(slug.id);
     setEventDetail(res.data);
-    console.log(res);
+
   }
   useEffect(() => {
     fetchEventDetail();
@@ -56,7 +53,7 @@ function EventDetail() {
             <h2 >Event Description</h2>
           </div>
           <div className='min-h-[250px]'>
-              <HostEvent/>
+            <HostEvent />
           </div>
           <div className='min-h-[150px]'>
             <h2>Thẻ</h2>
@@ -67,16 +64,14 @@ function EventDetail() {
         <div className='w-[40%]'>
           <div className='booking-event border-6 min-h-[200px]'>
             <TicketTable />
-            <Button className="float-right" onClick={handleShow}>
-              Đặt vé
-            </Button>
-            <ModalBooking
-              show={show}
-              handleClose={handleClose}
-            />
+
           </div>
         </div>
-       
+
+      </div>
+      <div className='container'>
+        <h2>Có thể bạn cũng thích</h2>
+        {/* <CarouselItems /> */}
       </div>
     </div>
   )

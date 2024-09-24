@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 
+
+
+
 const baseAPI = axios.create({
     baseURL: 'http://127.0.0.1:8000/api',
     headers: {
@@ -13,7 +16,7 @@ const baseAPI = axios.create({
 axios.interceptors.request.use(function (config) {
     // Do something before request is sent
     const { token } = useSelector(state => state.auth);
-    if(token){
+    if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -24,3 +27,4 @@ axios.interceptors.request.use(function (config) {
 });
 
 export default baseAPI;
+

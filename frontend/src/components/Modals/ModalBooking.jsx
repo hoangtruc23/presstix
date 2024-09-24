@@ -1,9 +1,26 @@
+import {useState} from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Form, Button } from 'react-bootstrap';
-
+import { formatPrice } from '../../assets/js/main.js'
+import ModalQRCode from './ModalQRCode.jsx';
+import baseQRBanking from '../../services/qrBanking.jsx'
 
 function ModalBooking(props) {
-    const { show, handleClose } = props;
+    const { show, handleClose, totalPrice } = props;
+    
+    const [showModalQR,setShowModalQR] = useState(); 
+
+    const [fileQR,setFileQR] = useState();
+    const handleBtnBanking = () => {
+        setShowModalQR(true);
+        getQRBanking();
+    }
+
+    const getQRBanking = () => {
+        const res = baseQRBanking(totalPrice,'Booking ID 1903');
+        setFileQR(res);
+    }
+   
     return (
         <Modal show={show} backdrop="static" onHide={handleClose}>
             <Modal.Header closeButton>
@@ -28,7 +45,7 @@ function ModalBooking(props) {
                         <Form.Control type="type" />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="">
-                        <Form.Label>Tổng tiền: </Form.Label>
+                        <Form.Label>Tổng tiền: <span className='text-red-500'>{formatPrice(totalPrice)}</span></Form.Label>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="">
                         <Form.Check type="checkbox" id="agreeCheckboxPolicy" label="Tôi đồng ý chính sách của Presstix" />
@@ -43,18 +60,19 @@ function ModalBooking(props) {
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" >
+                <Button variant="primary" onClick={handleBtnBanking}>
                     Tiếp theo
                 </Button>
+                <ModalQRCode show={showModalQR} setShow={setShowModalQR} fileQR={fileQR} totalPrice={totalPrice}/>
             </Modal.Footer>
         </Modal>
     )
 }
 
-
 ModalBooking.propTypes = {
     handleClose: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
+    totalPrice: PropTypes.number.isRequired,
 };
 
 
