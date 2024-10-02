@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
-import event1 from '../../assets/img/event1.webp';
+import { Link } from 'react-router-dom';
 import { getAllEvent } from '../../services/apiService';
 import './event_component.scss'
-import { Link } from 'react-router-dom';
+
+import EventCard_1 from './EventCard_1';
 
 function ListEvents() {
     const [listEvents, setListEvents] = useState([]);
@@ -25,22 +25,9 @@ function ListEvents() {
         <div className="d-flex justify-center gap-[30px] flex-wrap">
             {listEvents.map((event, index) => (
                 <Link to={`/event-detail/${event?.slug}`} key={index} className='w-[30%] info-event-home rounded-md'>
-                    <img src={event1} alt="Event" />
-                    <div className="d-flex gap-3 p-[10px]">
-                        <div className='w-[20%] text-center font-semibold'>
-                            <h3>{moment(event?.time_start).format('DD-MM')}</h3>
-                        </div>
-                        <div className='w-[80%]'>
-                            <h4>{event?.name}</h4>
-                            <div className='flex items-center gap-1'>
-                                <h3>{moment(event?.time_start).format('HH:mm')}</h3>
-                                <span>-</span>
-                                <h3>{moment(event?.time_end).format('HH:mm')}</h3>
-                            </div>
-                            <p>interested</p>
-                        </div>
-                    </div>
+                    <EventCard_1 event={event} />
                 </Link>
+
             ))}
         </div>
     );
