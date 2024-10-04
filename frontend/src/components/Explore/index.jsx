@@ -1,26 +1,19 @@
-import { Button, Form, InputGroup,DropdownButton,Dropdown } from 'react-bootstrap';
+import { PropTypes } from 'prop-types'
+import { Button, Form, InputGroup } from 'react-bootstrap';
 
 
-function SearchEvent() {
+function SearchEvent(props) {
+    const { setSearch, handleBtnSearchEvents } = props;
+
     return (
         <div>
             <InputGroup className="mb-3  bg-white p-1">
                 <Form.Control
                     placeholder="What kind of event you like?"
+                    onChange={(e) => setSearch(e.target.value)}
                 />
-                <DropdownButton
-                    variant="outline-secondary"
-                    title="Dropdown"
-                    id="input-group-dropdown-2"
-                    align="end"
-                    className='text-white'
-                >
-                    <Dropdown.Item href="#">Action</Dropdown.Item>
-                    <Dropdown.Item href="#" >Another action</Dropdown.Item>
-                    <Dropdown.Item href="#">Something else here</Dropdown.Item>
-                    
-                </DropdownButton>
-                <Button variant="outline-secondary" id="button-addon2">
+               
+                <Button variant="outline-secondary" id="button-addon2" onClick={handleBtnSearchEvents}>
                     <i className="fa-solid fa-magnifying-glass"></i>
                 </Button>
             </InputGroup>
@@ -28,4 +21,8 @@ function SearchEvent() {
     )
 }
 
+SearchEvent.propTypes = {
+    setSearch: PropTypes.string,
+    handleBtnSearchEvents: PropTypes.func
+}
 export default SearchEvent

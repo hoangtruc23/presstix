@@ -11,12 +11,17 @@ const getEventCate = () => {
     return baseAPI.get(`event-cate`);
 }
 
-const getAllEvent = () => {
-    return baseAPI.get(`events`);
+const searchEvents = (search ='') => {
+    return baseAPI.get(`events?search=${search}`,{
+        params: {
+            search,
+            page: 1,
+        },
+    });
 }
 
 const getEventDetail = (slug) => {
     return baseAPI.get(`event/${slug}`);
 }
 
-export { postLoginWithEmailPass,getEventCate,getAllEvent,getEventDetail }
+export { postLoginWithEmailPass,getEventCate,searchEvents,getEventDetail }

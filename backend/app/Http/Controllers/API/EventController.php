@@ -18,13 +18,34 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $event_all = Event::all();
-        $eventResource = EventResource::collection($event_all);
+        $search = $request->input('search');
+        $query = Event::query();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        $events = $query->paginate(10);
+
+        // $event_all = Event::all();
+        // $eventResource = EventResource::collection($event_all);
+        // return response()->json([
+        //     'data' => $eventResource,
+        // ],Response::HTTP_OK);
+        
         return response()->json([
-            'data' => $eventResource,
-        ],Response::HTTP_OK);
+            'data' => EventResource::collection($events),
+            'meta' => [
+                'current_page' => $events->currentPage(),
+                'last_page' => $events->lastPage(),
+                'per_page' => $events->perPage(),
+                'total' => $events->total(),
+            ],
+        ], Response::HTTP_OK);
     }
 
     /**
