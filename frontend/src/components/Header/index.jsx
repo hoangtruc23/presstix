@@ -59,6 +59,7 @@ function Header() {
                 <Link className="navbar-brand" href="/">
                     <img src={ticket} alt="Logo" style={{ width: '100px' }} />
                 </Link>
+                
                 <ul className="d-flex gap-3 text-center">
                     {item_nav.map((item, index) => (
                         <Link to={item.path} key={index} className="w-[100px] tracking-wide uppercase py-[20px] border-b-2 border-transparent hover:border-white duration-500 transition-all">{item.title}</Link>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import event1 from '../../assets/img/event1.webp';
 import TicketTable from '../../components/Tables/TicketTable';
 import { getEventDetail } from '../../services/apiService'
@@ -34,11 +34,11 @@ function EventDetail() {
             <h2 className='font-semibold text-[22px] text-white'>{eventDetail?.name}</h2>
             <div className='d-flex gap-3 items-center text-white'>
               <i className="fa-solid fa-clock"></i>
-              <h3 className='font-semibold '>{moment(eventDetail?.time_start).format('HH-mm')}</h3>
+              <h3 className='font-semibold '>{dayjs(eventDetail?.time_start).format('HH-mm')}</h3>
               <span>-</span>
-              <h3 className='font-semibold '>{moment(eventDetail?.time_end).format('HH-mm')}</h3>
+              <h3 className='font-semibold '>{dayjs(eventDetail?.time_end).format('HH-mm')}</h3>
               <span> / </span>
-              <h3 className='font-semibold '>{moment(event?.time_start).format('DD-MM')}</h3>
+              <h3 className='font-semibold '>{dayjs(event?.time_start).format('DD-MM')}</h3>
             </div>
             <div className='d-flex gap-[10px]'>
               <i className="fa-solid fa-location-dot text-white text-[16px]"></i>

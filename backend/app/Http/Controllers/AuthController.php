@@ -26,6 +26,7 @@ class AuthController extends Controller
                 'success' => true,
                 'token' => $token->plainTextToken,
                 'user' => ['name' => $user->name],
+                'role' => $user->role,
                 'message' => "Đăng nhập thành công"
             ]);
         }

@@ -6,6 +6,9 @@ import Event from "../pages/Event/index.jsx";
 import Contact from "../pages/Contact/index.jsx";
 import HomePage from "../pages/Home/index.jsx";
 import EventDetail from "../pages/Detail/EventDetail.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
+import AdminPages from "../pages/Admin/index.jsx";
+import ManageUser from "../pages/Admin/ManageUser/ManageUser.jsx";
 
 
 
@@ -18,23 +21,39 @@ const router = createBrowserRouter([
                 element: <HomePage />
             },
             {
-                path: "/events",
+                path: "events",
                 element: <Event />
             },
             {
-                path: "/about",
+                path: "about",
                 element: <About />
             },
             {
-                path: "/contact",
+                path: "contact",
                 element: <Contact />
             },
             {
-                path: `/event-detail/:id`,
+                path: `event-detail/:id`,
                 element: <EventDetail />
             },
         ],
     },
+    {
+        path: "admin",
+        element:
+            <ProtectedRoute allowedRoles={[0]}>
+                <AdminPages />
+            </ProtectedRoute>,
+        children: [
+            {
+                path: "manager-user",
+                element: <ManageUser />
+            },
+
+        ],
+    }
+
+
 ]);
 
 export default router

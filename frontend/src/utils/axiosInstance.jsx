@@ -1,8 +1,5 @@
 import axios from 'axios'
-import { useSelector } from 'react-redux'
-
-
-
+import { store } from '../redux/store.js'
 
 const baseAPI = axios.create({
     baseURL: 'http://127.0.0.1:8000/api',
@@ -11,20 +8,38 @@ const baseAPI = axios.create({
     },
 });
 
+export const baseAPIAdmin = axios.create({
+    baseURL: 'http://127.0.0.1:8000/api/admin',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
 
-// Add a request interceptor
-axios.interceptors.request.use(function (config) {
-    // Do something before request is sent
-    const { token } = useSelector(state => state.auth);
+const addAuthorizationHeader = (config) => {
+    const state = store.getState();
+    const token = state.auth.account.token;
+    console.log({token})
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+    return config
+}
 
-    return config;
-}, function (error) {
-    // Do something with request error
-    return Promise.reject(error);
-});
+baseAPI.interceptors.request.use(addAuthorizationHeader);
+baseAPIAdmin.interceptors.request.use(addAuthorizationHeader);
+
+// // Add a request interceptor
+// axios.interceptors.request.use(function (config) {
+//     // Do something before request is sent
+//     const { token } = useSelector(state => state.auth);
+//     if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config
+// }, function (error) {
+//     // Do something with request error
+//     return Promise.reject(error);
+// });
 
 export default baseAPI;
 
