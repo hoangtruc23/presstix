@@ -21,12 +21,11 @@ function EventList() {
     }, []);
 
     return (
-        <div className="d-flex justify-center gap-[30px] flex-wrap">
+        <div className="d-flex gap-[30px] flex-wrap max-w-4xl">
             {EventList.map((event, index) => (
                 <Link to={`/event-detail/${event?.slug}`} key={index} className='w-[30%] info-event-home rounded-md'>
                     <EventCard event={event} />
                 </Link>
-
             ))}
         </div>
     );

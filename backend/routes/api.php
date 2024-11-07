@@ -8,49 +8,68 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\EventCategoryController;
-
-
+use App\Http\Controllers\API\PaymentController;
+use App\Http\Controllers\API\WebhookController;
+use App\Http\Controllers\Organize\EventController as OrganizeEventController;
 
 // Route::get('/user', [UserController::class, 'index']);
 // Route::post('/auth/login',[AuthController::class,'login']);
 
-
-
-
 // EVENT 
-Route::get('/event-cate',[EventCategoryController::class,'index']);
+Route::get('/event-cate', [EventCategoryController::class, 'index']);
+Route::get('/events', [EventController::class, 'index']);
+Route::get('/event/{slug}', [EventController::class, 'show'])->name('event.show');
 
-Route::get('/events',[EventController::class,'index']);
-Route::get('/event/{slug}',[EventController::class,'show'])->name('event.show');
+//PAYMENT
+Route::post('/webhook-event-handler', [PaymentController::class, 'handleBankTransfer']);
+Route::post('/sync-bank', [PaymentController::class, 'sync']);
+Route::get('/transaction', [PaymentController::class, 'handleTransation']);
+Route::get('/transaction/{id}', [PaymentController::class, 'handleTransation']);
+
+Route::post('/payment', [PaymentController::class, 'handleInvoice']);
+// Route::post('/webhook', [PaymentController::class, 'handleWebhook']);
+
+// EVENT ORGANIZE
+Route::get('/event-list/{email}', [OrganizeEventController::class, 'getEventsByUserId'])->name('event.user');
+Route::post('/create-event', [EventController::class, 'store'])->name('create.event');
 
 // ADMIN
-// Route::get('/admin',[UserController::class,'index']);
 
+Route::controller(EventController::class)->group(function () {
+    Route::put('/event-update/{id}', 'update')->name('event.update');
+});
 
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/auth/login',[AuthController::class,'login'])->name('login');
-Route::middleware('auth:sanctum')->get('/auth/profile',[AuthController::class,'profile']);
+Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
-Route::middleware(['auth:sanctum','rolemanager:admin'])->group(function () {
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/auth/profile', [AuthController::class, 'profile']);
+    Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
+});
+
+
+Route::middleware(['auth:sanctum', 'rolemanager:admin'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::controller(AdminController::class)->group(function () {
-            Route::get('/', 'index')->name('admin');     
+            Route::get('/', 'index')->name('admin');
         });
         Route::controller(ManageUserController::class)->group(function () {
-            Route::get('/user', 'index')->name('admin.user');     
+            Route::get('/user', 'index')->name('admin.user');
         });
         Route::controller(ManageEventController::class)->group(function () {
-            Route::get('/event', 'index')->name('admin.event');     
+            Route::get('/events', 'index');
+            Route::delete('/events/{id}', 'destroy');
         });
     });
 });
 
 
-Route::middleware(['auth:sanctum','rolemanager:organize'])->group(function () {
+Route::middleware(['auth:sanctum', 'rolemanager:organize'])->group(function () {
     // Route::prefix('admin')->group(function () {
     //     Route::controller(AdminController::class)->group(function () {
     //         Route::get('/', 'index')->name('admin');     
@@ -60,4 +79,3 @@ Route::middleware(['auth:sanctum','rolemanager:organize'])->group(function () {
     //     });
     // });
 });
-

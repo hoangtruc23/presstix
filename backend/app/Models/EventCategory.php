@@ -15,6 +15,5 @@ class EventCategory extends Model
         'id',
         'name',
         'slug',
-        'status'
     ];
 }

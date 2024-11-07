@@ -1,12 +1,11 @@
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import event1 from '../../assets/img/event1.webp';
 
 function EventCard_1(props) {
     const { event } = props;
     return (
         <div>
-            <img src={event1} alt="Event" />
+            <img src={event?.images[0]?.image_url} alt="Event" />
             <div className="d-flex gap-3 p-[10px]">
                 <div className='w-[20%] text-center font-semibold'>
                     <h3>{dayjs(event?.time_start).format('DD-MM')}</h3>

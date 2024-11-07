@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import event1 from '../../assets/img/event1.webp';
 
 function EventCard(props) {
     const { event, layout } = props;
@@ -8,7 +7,7 @@ function EventCard(props) {
         <>
             {layout === 'explore' ? (
                 <div className='d-flex gap-4 cursor-pointer hover:shadow-lg hover:bg-slate-100 p-3'>
-                    <img src={event1} className='w-[45%]' />
+                    <img src={event?.images[0]?.image_url} className='w-[45%]' />
                     <div>
                         <h4 className='line-clamp-1'>{event?.name}</h4>
                         <div className="d-flex">
@@ -19,19 +18,19 @@ function EventCard(props) {
                 </div>
             ) : (
                 <>
-                    <img src={event1} alt="Event" />
+                    <img src={event?.images[0]?.image_url} alt="Event" className='h-80' />
                     <div className="d-flex gap-3 p-[10px]">
-                        <div className='w-[20%] text-center font-semibold'>
-                            <h3>{dayjs(event?.time_start).format('DD-MM')}</h3>
+                        <div className='text-center font-semibold'>
+                            <h3 className='w-max'>{dayjs(event?.time_start).format('DD-MM')}</h3>
                         </div>
                         <div className='w-[80%]'>
-                            <h4>{event?.name}</h4>
+                            <h4 className='line-clamp-1'>{event?.name}</h4>
                             <div className='flex items-center gap-1'>
-                                <h3>{dayjs(event?.time_start).format('HH:mm')}</h3>
+                                <h3 className='m-0'>{dayjs(event?.time_start).format('HH:mm')}</h3>
                                 <span>-</span>
-                                <h3>{dayjs(event?.time_end).format('HH:mm')}</h3>
+                                <h3 className='m-0'>{dayjs(event?.time_end).format('HH:mm')}</h3>
                             </div>
-                            <p>interested</p>
+                            <p>Interest</p>
                         </div>
                     </div>
                 </>

@@ -15,4 +15,21 @@ class ManageEventController extends Controller
             'event' => $event
         ]);
     }
+
+    function destroy($id){
+        $event = Event::findOrFail($id);
+
+        if (!$event) {
+            return response()->json([
+                'message' => 'Không tìm thấy sự kiện'
+            ], 404);
+        }
+
+        $event->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Xoá sự kiện thành công'
+        ]);
+    }
 }

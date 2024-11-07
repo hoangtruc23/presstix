@@ -1,23 +1,12 @@
 import { PropTypes } from 'prop-types'
-import { Button, Form, InputGroup } from 'react-bootstrap';
-
 
 function SearchEvent(props) {
-    const { setSearch, handleBtnSearchEvents } = props;
+    const { setSearch } = props;
 
     return (
-        <div>
-            <InputGroup className="mb-3  bg-white p-1">
-                <Form.Control
-                    placeholder="What kind of event you like?"
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-               
-                <Button variant="outline-secondary" id="button-addon2" onClick={handleBtnSearchEvents}>
-                    <i className="fa-solid fa-magnifying-glass"></i>
-                </Button>
-            </InputGroup>
-        </div>
+        <>
+            <input type="text" className="form-control p-4 text-[18px] rounded-xl" onChange={(e) => setSearch(e.target.value)} placeholder="Tìm kiếm sự kiện bạn thích" />
+        </>
     )
 }
 

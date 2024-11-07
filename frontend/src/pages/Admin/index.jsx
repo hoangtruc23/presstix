@@ -1,16 +1,18 @@
 import { Outlet } from 'react-router-dom'
-import Navbar from '../../components/Navbar'
+import Navbar from '../../components/Navbar/NavbarAdmin'
 
 function AdminPages() {
   return (
-    <div>
+    <>
       <div className="d-flex">
-        <Navbar />
-        <div className="container">
+        <div className="w-[22%]">
+          <Navbar />
+        </div>
+        <div className="container ">
           <Outlet />
         </div>
       </div>
-    </div >
+    </ >
   )
 }
 

@@ -45,13 +45,14 @@ function Header() {
         
     }
 
+    // Header Sticky 
     useEffect(() => {
         const onScroll = () => setOffset(window.scrollY);
-       
         window.removeEventListener('scroll', onScroll);
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
+
 
     return (
         <nav className={`header ${isHomePage ? 'h-fixed' : ''} ${offset >= 250 ? 'active-header animate__animated animate__fadeInDown' : ''}`}>
@@ -73,7 +74,12 @@ function Header() {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
-                            <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
+                            {account.role === 0 &&  <Dropdown.Item href="admin">Manage For Admin</Dropdown.Item> }
+
+                          
+                            <Dropdown.Item>  <Link to={'organizer'}>My Organizer</Link></Dropdown.Item>
+                            <Dropdown.Item><Link to="profile">Profile</Link></Dropdown.Item>
+                            
                             <Dropdown.Item onClick={handleBtnLogout}>Logout</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

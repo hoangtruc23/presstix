@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('slug');
             $table->string('name');
-            $table->string('location');
+            $table->string('address');
             $table->integer('slot');
             $table->date('time_start');
             $table->date('time_end');
             $table->string('policy');
             $table->string('status');
-            $table->string('image_path');
+            $table->text('description');
             $table->foreignId('event_cate_id')->constrained('event_categories');
 
             $table->timestamps();

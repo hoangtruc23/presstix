@@ -9,10 +9,10 @@ function EventsListCard_2(props) {
     const { events } = props;
 
     return (
-        <div className='d-flex flex-wrap'>
+        <div className='d-flex gap-5 flex-wrap my-4'>
             {events != null}{
                 events.map((event, index) => (
-                    <Link to={`/event-detail/${event?.slug}`} key={index} className='w-[45%] h-[150px]'>
+                    <Link to={`/event-detail/${event?.slug}`} key={index} className='w-[300px] h-[300px]'>
                         <EventCard_2 event={event} key={index} />
                     </Link>
 
