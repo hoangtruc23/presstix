@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\EventCategoryController;
+use App\Http\Controllers\API\InvoiceController;
 use App\Http\Controllers\API\PaymentController;
+use App\Http\Controllers\API\TicketController;
 use App\Http\Controllers\API\WebhookController;
 use App\Http\Controllers\Organize\EventController as OrganizeEventController;
 
@@ -26,15 +28,17 @@ Route::post('/sync-bank', [PaymentController::class, 'sync']);
 Route::get('/transaction', [PaymentController::class, 'handleTransation']);
 Route::get('/transaction/{id}', [PaymentController::class, 'handleTransation']);
 
-Route::post('/payment', [PaymentController::class, 'handleInvoice']);
-// Route::post('/webhook', [PaymentController::class, 'handleWebhook']);
+Route::post('/payment/guest', [InvoiceController::class, 'handleInvoice']);
 
 // EVENT ORGANIZE
 Route::get('/event-list/{email}', [OrganizeEventController::class, 'getEventsByUserId'])->name('event.user');
 Route::post('/create-event', [EventController::class, 'store'])->name('create.event');
 
-// ADMIN
+// TICKET 
+Route::post('/create-ticket', [TicketController::class, 'store'])->name('create.ticket');
 
+
+// ADMIN
 Route::controller(EventController::class)->group(function () {
     Route::put('/event-update/{id}', 'update')->name('event.update');
 });
@@ -48,6 +52,8 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/payment', [InvoiceController::class, 'handleInvoice']);
+    Route::get('/invoices', [InvoiceController::class, 'getInvoiceByUser']);
     Route::get('/auth/profile', [AuthController::class, 'profile']);
     Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
 });

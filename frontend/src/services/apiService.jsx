@@ -56,7 +56,6 @@ const getEventByUser = (user_id) => {
 
 
 const createNewEvent = (payload) => {
-    console.log("FormData payload:");
     for (const [key, value] of payload.entries()) {
         console.log(`${key}:`, value);
     }

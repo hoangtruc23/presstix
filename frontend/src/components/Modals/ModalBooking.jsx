@@ -4,15 +4,16 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { formatPrice } from '../../assets/js/main.js'
 import ModalQRCode from './ModalQRCode.jsx';
 import baseQRBanking from '../../services/qrBanking.jsx'
-import { postHandlerBankTransfer, postPaymentBooking } from '../../services/paymentService.jsx';
+import { postHandlerBankTransfer, postPaymentBooking, postTicket } from '../../services/paymentService.jsx';
 import { toast } from 'react-toastify'
 function ModalBooking(props) {
-    const { show, handleClose, totalPrice, isPolling, setIsPolling } = props;
+    const { show, handleClose, totalPrice, cart, isPolling, setIsPolling } = props;
 
     const randomNum = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
     const [showModalQR, setShowModalQR] = useState(false);
     // const [content, setContent] = useState(`InvoicesTicket${randomNum}`);
-    const content = `InvoicesTicket${randomNum}`;
+    // const content = `InvoicesTicket${randomNum}`;
+    const [content] = useState(`InvoicesTicket${randomNum}`);
     const [fileQR, setFileQR] = useState(null);
     const [formValues, setFormValues] = useState({
         email: '',
@@ -75,6 +76,27 @@ function ModalBooking(props) {
         await postPaymentBooking(totalPrice, content);
     }
 
+    const checkInvoicesSuccess = async (invoiceID) => {
+        console.log({ invoiceID });
+        if (invoiceID) {
+            try {
+                for (const item of cart) {
+                    const res = await postTicket({
+                        name: item.name,
+                        price: item.price,
+                        event_id: item.event_id,
+                        invoice_id: invoiceID,
+                    });
+                    console.log({ res });
+                }
+            } catch (error) {
+                console.error("Lỗi khi thêm ticket:", error);
+            }
+        } else {
+            console.error("Không insert được ticket");
+        }
+    }
+
     useEffect(() => {
         if (!isPolling) return;
 
@@ -83,13 +105,13 @@ function ModalBooking(props) {
 
         const timeout = setTimeout(() => {
             setIsPolling(false); // Dừng polling sau 5 phút
-            console.log('Dừng gọi API sau 5 phút');
         }, maxTime);
 
         const interval = setInterval(async () => {
             try {
                 const res = await postHandlerBankTransfer();
                 if (res?.data?.data?.amount === totalPrice && res?.data?.data?.desc.includes(content)) {
+                    checkInvoicesSuccess(res.data.data.invoice_id);
                     clearInterval(interval);
                     clearTimeout(timeout);
                     setIsPolling(false);
@@ -180,7 +202,7 @@ function ModalBooking(props) {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="">
                         <Form.Label>Thanh Toán</Form.Label>
-                        <Form.Check checked type="radio" label="Chuyển khoản" />
+                        <Form.Check defaultChecked type="radio" label="Chuyển khoản" />
                     </Form.Group>
                 </Form>
             </Modal.Body>

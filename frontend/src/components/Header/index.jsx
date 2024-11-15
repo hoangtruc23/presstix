@@ -1,5 +1,5 @@
-import { useState,useEffect } from 'react';
-import { Link,useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown } from 'react-bootstrap'
 import ticket from '../../assets/img/ticket.png'
@@ -10,8 +10,6 @@ function Header() {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const account = useSelector(state => state.auth.account);
     const dispatch = useDispatch();
-    const location = useLocation();
-    const isHomePage = location.pathname === '/';
 
     const item_nav = [
         {
@@ -33,7 +31,7 @@ function Header() {
     ]
 
     const [show, setShow] = useState(false);
-    const [offset, setOffset] = useState(0);
+  
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -45,17 +43,9 @@ function Header() {
         
     }
 
-    // Header Sticky 
-    useEffect(() => {
-        const onScroll = () => setOffset(window.scrollY);
-        window.removeEventListener('scroll', onScroll);
-        window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
-    }, []);
-
 
     return (
-        <nav className={`header ${isHomePage ? 'h-fixed' : ''} ${offset >= 250 ? 'active-header animate__animated animate__fadeInDown' : ''}`}>
+        <nav className={`header `}>
             <div className="container mx-auto d-flex justify-between items-center">
                 <Link className="navbar-brand" href="/">
                     <img src={ticket} alt="Logo" style={{ width: '100px' }} />
@@ -75,7 +65,6 @@ function Header() {
 
                         <Dropdown.Menu>
                             {account.role === 0 &&  <Dropdown.Item href="admin">Manage For Admin</Dropdown.Item> }
-
                           
                             <Dropdown.Item>  <Link to={'organizer'}>My Organizer</Link></Dropdown.Item>
                             <Dropdown.Item><Link to="profile">Profile</Link></Dropdown.Item>

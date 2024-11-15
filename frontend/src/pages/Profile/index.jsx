@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { putUpdateProfile } from '../../services/apiService';
 import { updateUser } from '../../redux/authReducer';
+import InvoicesByUser from '../../components/Ticket/InvoicesByUser';
 
 function Profile() {
     const dispatch = useDispatch();
@@ -12,7 +13,6 @@ function Profile() {
     const [name, setName] = useState();
     const [phone, setPhone] = useState();
     const [avatar, setAvatar] = useState(null);
-
 
     useEffect(() => {
         setEmail(account.account.email)
@@ -30,7 +30,6 @@ function Profile() {
             reader.readAsDataURL(file)
         }
     };
-
 
     const handleClickUpdateProfile = async (e) => {
         e.preventDefault();
@@ -76,8 +75,8 @@ function Profile() {
                     <button type="submit" className="btn btn-primary float-end" onClick={(e) => handleClickUpdateProfile(e)}>Cập nhật</button>
                 </form>
             </div>
-            
-            <div className="">
+
+            <div className="w-[40%]">
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                     <li className="nav-item">
                         <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Vé đã mua</a>
@@ -89,7 +88,7 @@ function Profile() {
                 </ul>
                 <div className="tab-content" id="myTabContent">
                     <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
+                        <InvoicesByUser />
                     </div>
                     <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 

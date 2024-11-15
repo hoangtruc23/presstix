@@ -11,9 +11,11 @@ class Transaction extends Model
     protected $fillable = [
         'id',
         'transaction_id',
+        'invoice_id',
         'amount',
         'description',
         'date',
+        
     ];
 
     public function invoice()

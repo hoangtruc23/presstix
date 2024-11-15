@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Button } from 'react-bootstrap';
 import ModalBooking from '../../components/Modals/ModalBooking';
 import './table.scss'
+import PropTypes from 'prop-types';
 function TicketTable(props) {
     const { ticketType } = props;
     const [totalPrice, setTotalPrice] = useState(0);
@@ -33,6 +34,8 @@ function TicketTable(props) {
             }
         });
     };
+
+    console.log({cart});
 
     const calculatorPrice = () => {
         const total = cart.reduce((acc, current) => acc + (current.price), 0);
@@ -73,6 +76,7 @@ function TicketTable(props) {
                             totalPrice={totalPrice}
                             isPolling={isPolling}
                             setIsPolling={setIsPolling}
+                            cart={cart}
                         />
                     </th>
                 </tr>
@@ -82,5 +86,11 @@ function TicketTable(props) {
         </table>
     )
 }
+
+
+TicketTable.propTypes = {
+    ticketType: PropTypes.array.isRequired,
+};
+
 
 export default TicketTable

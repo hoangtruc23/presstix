@@ -1,23 +1,27 @@
 import baseAPI from '../utils/axiosInstance'
 
-
-// const postPayment = (accountNumber, totalPrice) => {
-//     return baseAPI.post('payment', {
-//         accountNumber,
-//         amount: totalPrice,
-//     });
-// }
-
 const postHandlerBankTransfer = () => {
     return baseAPI.post('webhook-event-handler');
 }
 
-const postPaymentBooking = (totalPrice, content) => {
+const postPaymentBooking = (totalPrice, description) => {
     return baseAPI.post('payment', {
         amount: totalPrice,
-        content,
+        description,
     });
 }
 
+const getInvoicesByUser = () => {
+    return baseAPI.get('invoices');
+}
 
-export { postHandlerBankTransfer, postPaymentBooking }
+const postTicket = (name, price, event_id, invoice_id) => {
+    return baseAPI.post('create-ticket', {
+        name,
+        price,
+        event_id,
+        invoice_id,
+    });
+}
+
+export { postHandlerBankTransfer, postPaymentBooking, getInvoicesByUser, postTicket }

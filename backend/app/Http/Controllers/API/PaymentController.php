@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Transaction;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+
 
 class PaymentController extends Controller
 {
@@ -57,79 +59,6 @@ class PaymentController extends Controller
         return response()->json(json_decode($response), 200);
     }
 
-    // public function handleWebhook()
-    // {
-    //     $curl = curl_init();
-
-    //     $data = array(
-    //         'webhook' => 'https://e40e-2001-ee0-4f84-4140-cdba-3ca5-83dd-a815.ngrok-free.app/wc/handler-bank-transfer.php',
-    //         'secure_token' => 'CHUA-CO-KEY',
-    //         'income_only' => true
-    //     );
-    //     $postdata = json_encode($data);
-
-    //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL => "https://oauth.casso.vn/v2/webhooks",
-    //         CURLOPT_RETURNTRANSFER => true,
-    //         CURLOPT_TIMEOUT => 30,
-    //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //         CURLOPT_CUSTOMREQUEST => "POST",
-    //         CURLOPT_POSTFIELDS => $postdata,
-    //         CURLOPT_HTTPHEADER => array(
-    //             "Authorization: Apikey {$this->apiKey}",
-    //             "Content-Type: application/json"
-    //         ),
-    //     ));
-
-    //     $response = curl_exec($curl);
-
-    //     if ($response === false) {
-    //         $err = curl_error($curl);
-    //         curl_close($curl);
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'cURL Error: ' . $err,
-    //         ]);
-    //     }
-
-    //     curl_close($curl);
-
-    //     // Giải mã phản hồi JSON để kiểm tra kết quả
-    //     $responseData = json_decode($response, true);
-
-    //     if (isset($responseData['error'])) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Failed to create webhook: ' . $responseData['error'],
-    //         ]);
-    //     }
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Webhook created successfully',
-    //         'response' => $responseData,
-    //     ]);
-    // }
-
-
-    public function handleInvoice(Request $request)
-    {
-
-        // $request->validate([
-        // ]);
-
-        $invoice = new Invoice();
-        $invoice->invoice_date = now();
-        $invoice->amount = $request['amount'];
-        $invoice->content = $request['content'];
-
-        $invoice->save();
-        return response()->json([
-            'success' => true,
-            'invoice' => $invoice,
-        ]);
-    }
-
     // WEBHOOK để Casso có thể gửi giao dịch qua khi có giao dịch mới 
     public function handleBankTransfer(Request $request)
     {
@@ -173,14 +102,13 @@ class PaymentController extends Controller
             if (isset($responseData['data']['records']) && count($responseData['data']['records']) > 0) {
                 $latestTransaction = $responseData['data']['records'][0];
 
-                // Kiểm tra và lấy thông tin giao dịch
                 if (isset($latestTransaction['amount']) && isset($latestTransaction['description'])) {
                     $transactionID = $latestTransaction['id'];
                     $transactionAmount = $latestTransaction['amount'];
                     $transactionDesc = $latestTransaction['description'];
                     $transactionDate = $latestTransaction['when'];
+                    $invoiceID = null;
 
-                    // Xử lý giao dịch tại đây (lưu vào cơ sở dữ liệu, gửi thông báo, v.v.)
                     $exitsTransaction = Transaction::where('transaction_id', $transactionID)->first();
 
                     if (!$exitsTransaction) {
@@ -192,30 +120,35 @@ class PaymentController extends Controller
                         $transaction->save();
 
 
+                        $contentIdentifier = substr($transactionDesc, strrpos($transactionDesc, 'InvoicesTicket'));
+
+                        // Debug: Log contentIdentifier
+                        Log::info('description Identifier: ' . $contentIdentifier);
+
                         $invoice = Invoice::where('amount', $transactionAmount)
-                            ->where('content', 'like', '%' . $transactionDesc . '%')
+                            ->where('description', 'like', '%' . $contentIdentifier . '%')
                             ->where('status', 'pending')
                             ->first();
 
-                        if ($invoice) {
-                            $transaction->invoice_id = $invoice->id;
-                            $transaction->save();
+                        Log::info('Invoice Found: ', ['invoice' => $invoice]);
 
-                            // Cập nhật trạng thái hóa đơn
+                        if ($invoice) {
+                            $invoiceID =  $invoice->id;
                             $invoice->status = 'success';
                             $invoice->transaction_id = $transactionID;
                             $invoice->save();
 
+                            $transaction->invoice_id = $invoiceID;
+                            $transaction->save();
                         } else {
-                            return response()->json([
-                                'code' => 406,
-                                'message' => 'Lỗi lưu invoice',
-                                'data' => [
-                                    'invoice' =>  $invoice,
-                                  
-                                ],
-                            ], 406);
+                            Log::error('Không tìm thấy Invoice với các điều kiện tìm kiếm', [
+                                'amount' => $transactionAmount,
+                                'description' => $transactionDesc,
+                                'status' => 'pending',
+                            ]);
                         }
+                    } else {
+                        $invoiceID = $exitsTransaction->invoice_id;
                     }
 
                     return response()->json([
@@ -226,6 +159,7 @@ class PaymentController extends Controller
                             'transaction_id' =>  $transactionID,
                             'amount' => $transactionAmount,
                             'desc' => $transactionDesc,
+                            'invoice_id' => $invoiceID,
                         ],
                     ], 200);
                 }

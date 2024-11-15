@@ -1,16 +1,36 @@
+// import { useEffect, useState } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
+
 import carousel1 from '../../assets/img/carousel1.jpg'
 
 function HomeCarousel() {
-  return (
-    <div className="HomeCarousel">
-      <img src={carousel1} alt="banner carousel" />
+  // const [listCates, setListCates] = useState([]);
 
-      <div className="content-carousel text-semibold uppercase">
-        <h1 className='text-[50px] text-white'>Don’t miss out!</h1>
-        <h1 className='text-[40px] text-white'>Explore the vibrant events happening locally and globally.</h1>
-      </div>
-    </div>
-  )
+
+  return (
+    <Swiper
+      slidesPerView={1}
+      spaceBetween={30}
+      loop={true}
+      pagination={{
+        clickable: true,
+      }}
+      navigation={true}
+      modules={[Pagination, Navigation]}
+      className="mySwiper h-[700px]"
+    >
+      <SwiperSlide className='p-14 h-[700px]'>
+        <img
+          className='rounded-xl object-cover w-full h-full'
+          src={carousel1}
+          alt="Event"
+        />
+      </SwiperSlide>
+      <SwiperSlide>Slide 2</SwiperSlide>
+      <SwiperSlide>Slide 3</SwiperSlide>
+    </Swiper>
+)
 }
 
 export default HomeCarousel
