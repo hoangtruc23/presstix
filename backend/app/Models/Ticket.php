@@ -16,4 +16,13 @@ class Ticket extends Model
         'image',
        
     ];
+
+    public function invoice() {
+        return $this->hasOne(Invoice::class);
+    }
+    
+    public function events()
+{
+    return $this->belongsToMany(Event::class);
+}
 }

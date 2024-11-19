@@ -16,7 +16,7 @@ function FilterCateEvent() {
 
     return (
         <>
-            <select className="py-3 px-4 w-52 rounded-lg bg-warning appearance-none">
+            <select className="py-3 px-4 w-full border border-black  rounded-lg appearance-none">
                 {cateList && cateList.map((cate, index) => (
                     <option key={index} className="text-gray-700" selected>
                         {cate.name}

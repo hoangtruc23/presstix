@@ -5,7 +5,7 @@ function Contact() {
         <div className='min-h-96 my-20'>
             <div className="contact-block w-[60%] ">
                 <div className="w-[50%] d-flex justify-center items-center">
-                    <img src={contact} className='w-[80%]' />
+                    <img src={contact} className='w-[50%]' />
                 </div>
                 <div className="w-[50%]">
                     <h1>Contact</h1>

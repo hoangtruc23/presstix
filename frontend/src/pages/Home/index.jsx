@@ -9,7 +9,6 @@ function HomePage() {
   return (
     <>
       <HomeCarousel />
-      
       <div className="w-[80%] mx-auto px-4">
         <div className="my-[50px]">
           <h2 className="mb-4">Khám phá danh mục</h2>

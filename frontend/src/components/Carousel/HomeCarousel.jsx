@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 
 import carousel1 from '../../assets/img/carousel1.jpg'
+import banner2 from '../../assets/img/banner-2.png'
+import banner3 from '../../assets/img/banner-3.png'
 
 function HomeCarousel() {
   // const [listCates, setListCates] = useState([]);
@@ -20,6 +22,13 @@ function HomeCarousel() {
       modules={[Pagination, Navigation]}
       className="mySwiper h-[700px]"
     >
+      <SwiperSlide>
+        <img
+          className='rounded-xl object-cover w-full h-full'
+          src={banner2}
+          alt="Event"
+        />
+      </SwiperSlide>
       <SwiperSlide className='p-14 h-[700px]'>
         <img
           className='rounded-xl object-cover w-full h-full'
@@ -27,10 +36,16 @@ function HomeCarousel() {
           alt="Event"
         />
       </SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>Slide 3</SwiperSlide>
+
+      <SwiperSlide>
+        <img
+          className='rounded-xl object-cover w-full h-full'
+          src={banner3}
+          alt="Event"
+        />
+      </SwiperSlide>
     </Swiper>
-)
+  )
 }
 
 export default HomeCarousel

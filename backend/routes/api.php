@@ -19,6 +19,7 @@ use App\Http\Controllers\Organize\EventController as OrganizeEventController;
 
 // EVENT 
 Route::get('/event-cate', [EventCategoryController::class, 'index']);
+
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/event/{slug}', [EventController::class, 'show'])->name('event.show');
 
@@ -36,6 +37,7 @@ Route::post('/create-event', [EventController::class, 'store'])->name('create.ev
 
 // TICKET 
 Route::post('/create-ticket', [TicketController::class, 'store'])->name('create.ticket');
+Route::post('/ticket-success-user', [TicketController::class, 'getTicketSuccess']);
 
 
 // ADMIN

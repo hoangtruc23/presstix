@@ -41,9 +41,7 @@ function ModalLogin(props) {
 
     return (
         <div>
-            <Button className="bg-transparent border-0" onClick={handleShow}>
-                Login
-            </Button>
+           
             <Modal
                 show={show}
                 onHide={handleClose}

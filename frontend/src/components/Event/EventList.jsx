@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { searchEvents } from '../../services/apiService';
 import './event_component.scss'
 import EventCard from './EventCard';
+import EventCard_1 from './EventCard_1';
 
 function EventList() {
     const [EventList, setEventList] = useState([]);
@@ -21,10 +22,11 @@ function EventList() {
     }, []);
 
     return (
-        <div className="d-flex gap-[30px] flex-wrap max-w-4xl">
+        <div className="d-flex gap-[30px]">
             {EventList.map((event, index) => (
-                <Link to={`/event-detail/${event?.slug}`} key={index} className='w-[30%] info-event-home rounded-md'>
-                    <EventCard event={event} />
+                <Link to={`/event-detail/${event?.slug}`} key={index} className=' rounded-md'>
+                    {/* <EventCard event={event} /> */}
+                    <EventCard_1 event={event}  />
                 </Link>
             ))}
         </div>

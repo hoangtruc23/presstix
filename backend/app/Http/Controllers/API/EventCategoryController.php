@@ -21,6 +21,7 @@ class EventCategoryController extends Controller
     {
         $event_cate = EventCategory::all();
         $event_cateResource = EventCategoryResource::collection($event_cate);
+
         return response()->json([
             'data' => $event_cateResource,
         ],Response::HTTP_OK);

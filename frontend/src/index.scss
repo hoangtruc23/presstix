@@ -11,7 +11,8 @@
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  // font-family: 'Montserrat', sans-serif;
+  font-family: "Judson", serif;
 }
 
 :root {
@@ -113,4 +114,38 @@ a:hover {
   position: absolute;
   top: 300px;
   left: 200px;
+}
+
+// Banner section
+.banner {
+  position: relative;
+  height: 600px;
+  background-size: cover;
+  background-position: center;
+
+  .banner-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  }
+}
+
+// Filter section
+.filter {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
 }
