@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { putUpdateProfile } from '../../services/apiService';
 import { updateUser } from '../../redux/authReducer';
 import InvoicesByUser from '../../components/Ticket/InvoicesByUser';
+import TicketSuccess from '../../components/Ticket/TicketSuccess';
 
 function Profile() {
     const dispatch = useDispatch();
@@ -91,7 +92,7 @@ function Profile() {
                 </ul>
                 <div className="tab-content" id="myTabContent">
                     <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
+                        <TicketSuccess />
                     </div>
                     <div className="tab-pane fade" id="TicketCancelled" role="tabpanel" aria-labelledby="profile-tab">
                         1

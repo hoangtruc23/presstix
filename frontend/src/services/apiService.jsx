@@ -56,10 +56,6 @@ const getEventByUser = (user_id) => {
 
 
 const createNewEvent = (payload) => {
-    for (const [key, value] of payload.entries()) {
-        console.log(`${key}:`, value);
-    }
-
     return baseAPI.post('create-event', payload, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -68,5 +64,14 @@ const createNewEvent = (payload) => {
 };
 
 
+const postTicketSuccess = () => {
+    return baseAPI.post('ticket-success-user');
+};
 
-export { postLoginWithEmailPass, getMyProfile, putUpdateProfile, getEventCate, searchEvents, getEventDetail, getEventByUser, createNewEvent, putUpdateEvent }
+
+
+export {
+    postLoginWithEmailPass, getMyProfile, putUpdateProfile, getEventCate, searchEvents, getEventDetail,
+    getEventByUser, createNewEvent, putUpdateEvent,
+    postTicketSuccess
+}

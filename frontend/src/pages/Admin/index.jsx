@@ -5,7 +5,7 @@ function AdminPages() {
   return (
     <>
       <div className="d-flex">
-        <div className="w-[22%]">
+        <div className="w-[25%]">
           <Navbar />
         </div>
         <div className="container ">

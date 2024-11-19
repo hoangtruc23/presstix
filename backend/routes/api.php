@@ -13,9 +13,7 @@ use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\TicketController;
 use App\Http\Controllers\API\WebhookController;
 use App\Http\Controllers\Organize\EventController as OrganizeEventController;
-
-// Route::get('/user', [UserController::class, 'index']);
-// Route::post('/auth/login',[AuthController::class,'login']);
+use Illuminate\Support\Facades\Auth;
 
 // EVENT 
 Route::get('/event-cate', [EventCategoryController::class, 'index']);
@@ -37,7 +35,6 @@ Route::post('/create-event', [EventController::class, 'store'])->name('create.ev
 
 // TICKET 
 Route::post('/create-ticket', [TicketController::class, 'store'])->name('create.ticket');
-Route::post('/ticket-success-user', [TicketController::class, 'getTicketSuccess']);
 
 
 // ADMIN
@@ -52,8 +49,8 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
-
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/ticket-success-user', [TicketController::class, 'getTicketSuccess']);
     Route::post('/payment', [InvoiceController::class, 'handleInvoice']);
     Route::get('/invoices', [InvoiceController::class, 'getInvoiceByUser']);
     Route::get('/auth/profile', [AuthController::class, 'profile']);
@@ -77,13 +74,3 @@ Route::middleware(['auth:sanctum', 'rolemanager:admin'])->group(function () {
 });
 
 
-Route::middleware(['auth:sanctum', 'rolemanager:organize'])->group(function () {
-    // Route::prefix('admin')->group(function () {
-    //     Route::controller(AdminController::class)->group(function () {
-    //         Route::get('/', 'index')->name('admin');     
-    //     });
-    //     Route::controller(ManageUserController::class)->group(function () {
-    //         Route::get('/user', 'index')->name('admin.user');     
-    //     });
-    // });
-});

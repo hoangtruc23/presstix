@@ -36,9 +36,6 @@ class EventController extends Controller
                 $q->where('name', 'LIKE', '%' . $search . '%');
             });
         }
-
-      
-
         $events = $query->with('images')->paginate(10);
 
         return response()->json([
@@ -78,9 +75,7 @@ class EventController extends Controller
 
             $data['slug'] = Str::slug($data['name']);
             $data['slot'] = array_sum(array_column($data['ticket_types'], 'quantity'));
-            $data['description'] = 'kjadhajkshd';
-
-
+        
             // Tạo sự kiện mới
             $event = Event::create($data);
 

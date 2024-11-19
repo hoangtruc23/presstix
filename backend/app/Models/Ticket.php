@@ -14,15 +14,16 @@ class Ticket extends Model
         'name',
         'price',
         'image',
-       
+
     ];
 
-    public function invoice() {
-        return $this->hasOne(Invoice::class);
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
     }
-    
+
     public function events()
-{
-    return $this->belongsToMany(Event::class);
-}
+    {
+        return $this->belongsToMany(Event::class);
+    }
 }

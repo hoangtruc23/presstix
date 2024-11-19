@@ -51,9 +51,13 @@ function EventDetail() {
           <div className='min-h-[350px]'>
             <h2>Thông tin sự kiện</h2>
             <div className="">
-              <p>{eventDetail?.description}</p>
+              <div
+                className="h-[600px] overflow-y-scroll border shadow-sm p-3 rounded-xl"
+                dangerouslySetInnerHTML={{ __html: eventDetail?.description }}
+              />
             </div>
           </div>
+
           <div className='min-h-[250px]'>
             <HostEvent />
           </div>
@@ -61,7 +65,7 @@ function EventDetail() {
         </div>
         <div className='w-[40%]'>
           <div className='booking-event border-6 min-h-[200px]'>
-            <TicketTable ticketType={ticketType}  />
+            <TicketTable ticketType={ticketType} />
 
           </div>
         </div>

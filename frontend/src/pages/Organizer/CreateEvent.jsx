@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import CreateTicketType from "../../components/Ticket/CreateTicketType";
 import { createNewEvent, getEventCate } from "../../services/apiService";
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo } from 'ckeditor5';
+import 'ckeditor5/ckeditor5.css';
 
 function CreateEvent() {
   const [eventCate, setEventCate] = useState([]);
@@ -21,6 +24,7 @@ function CreateEvent() {
     ticket_types: [],
     images: []
   });
+
 
   const fetchDataEventCate = async () => {
     const res = await getEventCate();
@@ -42,6 +46,10 @@ function CreateEvent() {
     }
   };
 
+  const handleEditorChange = (event, editor) => {
+    const data = editor.getData();
+    setFormData(prev => ({ ...prev, description: data }));
+  };
 
   const handleImageLogo = (e) => {
     const file = e.target.files[0];
@@ -65,13 +73,12 @@ function CreateEvent() {
 
   const handleStatusChange = (e) => {
     setFormData(prev => ({ ...prev, status: e.target.value }));
-  }
+  };
 
   const handleSubmitCreateEvent = async (e) => {
     e.preventDefault();
     const payload = new FormData();
 
-    // Append other form data
     payload.append('name', formData.name);
     payload.append('user_id', formData.user_id);
     payload.append('address', formData.address);
@@ -90,17 +97,13 @@ function CreateEvent() {
       }
     });
 
-    // payload.append('ticket_types[0][name]', 'Ticket Name');
-    // payload.append('ticket_types[0][price]', 100);
-    // payload.append('ticket_types[0][quantity]', 10);
-
     formData.images.forEach((image, index) => {
       payload.append(`images[${index}]`, image);
     });
 
     try {
+      console.log({ payload });
       const res = await createNewEvent(payload);
-      console.log({ res });
       if (res.data.success) {
         toast.success('Tạo sự kiện thành công');
       }
@@ -120,14 +123,14 @@ function CreateEvent() {
             <label htmlFor="logo-upload">Logo </label>
             <input type="file" accept="image/*" onChange={handleImageLogo} style={{ display: 'none' }} id="logo-upload" />
             {imageLogo && (
-              <img src={imageLogo} alt="Preview" className='rounded-xl object-cove' style={{ width: '720', height: '400px' }} />
+              <img src={imageLogo} alt="Preview" className='rounded-xl object-cover' style={{ width: '720px', height: '400px' }} />
             )}
           </div>
-          <div className=" form-control rounded-xl min-h-60 h-auto">
+          <div className="form-control rounded-xl min-h-60 h-auto">
             <label>Ảnh bìa sự kiện: </label>
             <input type="file" accept="image/*" onChange={handleImageBia} />
             {imageBia && (
-              <img src={imageBia} alt="Preview" className='rounded-xl object-cover' style={{ width: '1280', height: '400px' }} />
+              <img src={imageBia} alt="Preview" className='rounded-xl object-cover' style={{ width: '1280px', height: '400px' }} />
             )}
           </div>
         </div>
@@ -156,15 +159,23 @@ function CreateEvent() {
           <label>Địa điểm: </label>
           <input type="text" className="form-control rounded-xl" name='address' onChange={handleChange} />
         </div>
+
         <div className="form-group">
           <label>Thông tin sự kiện: </label>
-          <textarea
-            className="form-control rounded-xl min-h-80"
-            name='description'
-            onChange={handleChange}
-            placeholder='Giới thiệu sự kiện...'
-          />
+          <div>
+            <CKEditor
+              name='description'
+              onChange={handleEditorChange}
+              editor={ClassicEditor}
+              config={{
+                toolbar: ['undo', 'redo', '|', 'bold', 'italic'],
+                plugins: [Bold, Essentials, Italic, Mention, Paragraph, Undo],
+                initialData: formData.description,
+              }}
+            />
+          </div>
         </div>
+
         <div className="form-group">
           <label>Policy: </label>
           <textarea
@@ -188,15 +199,14 @@ function CreateEvent() {
         <CreateTicketType setListTicketType={setListTicketType} />
         <div className="form-group w-[40%]">
           <label>Trạng thái: </label>
-          <select className="form-select bg-red-500 text-white py-2 px-5 rounded-lg  mx-3"
+          <select className="form-select bg-red-500 text-white py-2 px-5 rounded-lg mx-3"
             value={formData.status}
             onChange={handleStatusChange}>
-            <option value="active" >Active</option>
+            <option value="active">Active</option>
             <option value="private">Private</option>
           </select>
           <button type="submit" className="btn btn-success w-40 py-2">Tạo sự kiện</button>
         </div>
-
       </form>
     </div>
   );

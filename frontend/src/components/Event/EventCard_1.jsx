@@ -8,7 +8,7 @@ function EventCard_1(props) {
     return (
         <div
             key={event.id}
-            className="bg-white shadow-lg rounded-lg p-4 w-[300px] hover:shadow-xl transition-shadow duration-300"
+            className="bg-white shadow-lg rounded-lg p-4 w-[300px] hover:shadow-xl transition-shadow duration-300 hover:scale-105"
         >
             <img
                 src={event?.images[0]?.image_url}

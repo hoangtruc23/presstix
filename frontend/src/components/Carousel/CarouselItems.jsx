@@ -26,8 +26,8 @@ function CarouselItems() {
     return (
         <Swiper
             key={listCates.length}
-            slidesPerView={4}
-            spaceBetween={10}
+            slidesPerView={5}
+            spaceBetween={50}
             loop={true}
             pagination={{
                 clickable: true,
@@ -37,7 +37,7 @@ function CarouselItems() {
             className="mySwiper"
         >
             {listCates && listCates.length > 0 && listCates.map((cate, index) => (
-                <SwiperSlide key={index} className='p-14'>
+                <SwiperSlide key={index} >
                     <img
                         className='rounded-xl object-cover  '
                         src={cateimg}

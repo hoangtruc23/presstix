@@ -30,7 +30,6 @@ function InvoicesByUser() {
                 ))}
             </div>
 
-            {/* Modal */}
             <div className="modal fade" id="modalInvoiceDetail" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
