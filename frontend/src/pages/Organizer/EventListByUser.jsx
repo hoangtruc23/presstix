@@ -10,7 +10,7 @@ function EventListByUser() {
 
     const fetchEventByUser = async () => {
         const res = await getEventByUser(account.account.id);
-        setEventList(res.data);
+        setEventList(res.data.events);
     }
 
     useEffect(() => {

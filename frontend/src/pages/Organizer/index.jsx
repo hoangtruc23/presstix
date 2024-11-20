@@ -4,11 +4,11 @@ import NavbarOriganizer from "../../components/Navbar/NavbarOrganizer"
 
 function Organizer() {
     return (
-        <div className="d-flex">
+        <div className="d-flex ">
             <div className="w-[300px]">
                 <NavbarOriganizer />
             </div>
-            <div className="container w-30%">
+            <div className="w-[75%]">
                 <Outlet />
             </div>
         </div>

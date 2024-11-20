@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Organize;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\EventImage;
 use App\Models\TicketType;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 
@@ -78,12 +80,17 @@ class EventController extends Controller
     }
 
    public function getEventsByUserId($user_id){
-        $user = User::findOrFail($user_id);
+
+        // $user = User::findOrFail($user_id);
         
-        $events = Event::where('user_id', $user_id)->get();
+        $events = Event::with('images')
+        ->where('user_id', $user_id)
+        ->get();
 
-        return response()->json($events);
+        return response()->json([
+            'events' => EventResource::collection($events),
+        ], 200);
    }
-
+ 
    
 }

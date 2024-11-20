@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 function EventCard_1(props) {
     const { event } = props;
-
-    console.log({event});
+    
     return (
         <div
             key={event.id}
@@ -16,15 +15,12 @@ function EventCard_1(props) {
                 className="w-full h-[200px] object-cover rounded-lg mb-4"
             />
             <div className="flex flex-col">
-                <div className="text-center font-semibold text-lg text-blue-600 mb-2">
+                <div className="font-semibold text-lg text-blue-600 mb-2">
                     <h4 className="text-xl font-semibold text-gray-800 mb-2 line-clamp-1">{event?.name}</h4>
 
                 </div>
-                
-               
                 <div className="mb-3 d-flex gap-5">
                     <h3 className="m-0">{dayjs(event?.time_start).format('DD-MM')}</h3>
-
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
                         <span className="font-medium">{dayjs(event?.time_start).format('HH:mm')}</span>
                         <span className="text-gray-400">-</span>

@@ -61,17 +61,17 @@ const router = createBrowserRouter([
                 ],
             },
             {
-                path: "organizer",
                 element: <Organizer />,
                 children: [
-                    {
-                        path: 'create-event',
-                        element: <CreateEvent />
-                    },
                     {
                         path: 'event-list',
                         element: <EventListByUser />
                     },
+                    {
+                        path: 'create-event',
+                        element: <CreateEvent />
+                    },
+                  
                 ],
             },
             {

@@ -27,7 +27,7 @@ function ManageEventTable(props) {
     const handleChangeStatus = async (e, event) => {
         try {
             const selectedStatus = e.target.value;
-
+          
             const res = await putUpdateEvent(event.id, selectedStatus);
             if (res.data.message) {
                 toast.success(res.data.message);

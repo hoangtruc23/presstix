@@ -36,16 +36,19 @@ class EventController extends Controller
                 $q->where('name', 'LIKE', '%' . $search . '%');
             });
         }
-        $events = $query->with('images')->paginate(10);
+        $events = $query->with('images')
+        ->where('status','active')
+        ->get();
 
         return response()->json([
             'data' => EventResource::collection($events),
-            'meta' => [
-                'current_page' => $events->currentPage(),
-                'last_page' => $events->lastPage(),
-                'per_page' => $events->perPage(),
-                'total' => $events->total(),
-            ],
+            'events' => $events,
+            // 'meta' => [
+            //     'current_page' => $events->currentPage(),
+            //     'last_page' => $events->lastPage(),
+            //     'per_page' => $events->perPage(),
+            //     'total' => $events->total(),
+            // ],
         ], Response::HTTP_OK);
     }
 
@@ -75,7 +78,7 @@ class EventController extends Controller
 
             $data['slug'] = Str::slug($data['name']);
             $data['slot'] = array_sum(array_column($data['ticket_types'], 'quantity'));
-        
+
             // Tạo sự kiện mới
             $event = Event::create($data);
 
@@ -125,7 +128,7 @@ class EventController extends Controller
         }
 
         return response()->json([
-             'data' => new EventResource($event),
+            'data' => new EventResource($event),
         ], Response::HTTP_OK);
     }
 
@@ -136,19 +139,104 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
 
-        $status = $request->status;
+        try {
+            $data = $request->validate([
+                'name' => 'nullable|string|max:255',
+                'address' => 'nullable|string|max:255',
+                'time_start' => 'nullable|date',
+                'time_end' => 'nullable|date|after:time_start',
+                'policy' => 'nullable|string',
+                'ticket_types' => 'nullable|array',
+                'ticket_types.*.name' => 'nullable|string|max:255',
+                'ticket_types.*.price' => 'nullable|integer',
+                'ticket_types.*.quantity' => 'nullable|integer|min:1',
+                'slot' => 'nullable|integer',
+                'event_cate_id' => 'nullable|integer|exists:event_categories,id',
+                'description' => 'nullable|string',
+                // 'status' => 'nullable|string|in:available,used,cancelled',
+                'status' => 'nullable|string|',
+            ]);
 
-        $event->status = $status;
+            if ($request->has('name')) {
+                $data['slug'] = Str::slug($request->name);
+                $event->name = $request->name;
+            }
 
-        $event->save();
+            if ($request->has('status')) {
+                $event->status = $request->status;
+            }
 
-        return response()->json(
-            [
-                'event' => $event,
+            if ($request->has('address')) {
+                $event->address = $request->address;
+            }
+
+            if ($request->has('time_start')) {
+                $event->time_start = $request->time_start;
+            }
+
+            if ($request->has('time_end')) {
+                $event->time_end = $request->time_end;
+            }
+
+            if ($request->has('policy')) {
+                $event->policy = $request->policy;
+            }
+
+            if ($request->has('event_cate_id')) {
+                $event->event_cate_id = $request->event_cate_id;
+            }
+
+            if ($request->has('description')) {
+                $event->description = $request->description;
+            }
+
+            if ($request->has('ticket_types')) {
+                $ticketTypesData = $request->ticket_types;
+                $event->slot = array_sum(array_column($ticketTypesData, 'quantity'));
+                foreach ($ticketTypesData as $ticketType) {
+                    $eventTicket = TicketType::where('event_id', $event->id)
+                        ->where('name', $ticketType['name'])
+                        ->first();
+                    if ($eventTicket) {
+                        $eventTicket->update([
+                            'price' => $ticketType['price'],
+                            'quantity' => $ticketType['quantity'],
+                        ]);
+                    } else {
+                        TicketType::create([
+                            'name' => $ticketType['name'],
+                            'price' => $ticketType['price'],
+                            'quantity' => $ticketType['quantity'],
+                            'status' => true,
+                            'event_id' => $event->id,
+                        ]);
+                    }
+                }
+            }
+
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $imagePath = $image->store('events', 'public');
+                    EventImage::create([
+                        'event_id' => $event->id,
+                        'image_url' => '/storage/' . $imagePath,
+                    ]);
+                }
+            }
+
+            $event->save();
+
+            return response()->json([
+                'event' => $event->load('images'),
                 'message' => 'Cập nhật thành công',
-            ],
-            Response::HTTP_OK
-        );
+            ], Response::HTTP_OK);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation errors occurred',
+                'errors' => $e->errors()
+            ], 422);
+        }
     }
 
     /**

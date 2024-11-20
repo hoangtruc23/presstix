@@ -50,7 +50,7 @@ function Event() {
             </div>
 
             <div className="container min-h-[600px] py-8">
-                <div className="flex flex-col md:flex-row gap-8">
+                <div className="flex gap-8">
                     <div className="filter w-full md:w-[20%] bg-gray-100 p-6 rounded-xl shadow-lg">
                         <h2 className="text-lg font-semibold mb-4 text-gray-900">Sắp xếp theo</h2>
                         <FilterCateEvent />

@@ -37,16 +37,16 @@ class TicketController extends Controller
         try {
             $user_id = Auth::id();
 
-            $tickets = Ticket::whereHas('invoice', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id)
-                ->where('status','success');
-            })
-            ->get();
+            $tickets = Ticket::with('event')
+                ->whereHas('invoice', function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id)
+                        ->where('status', 'success');
+                })
+                ->get();
 
             return response()->json([
                 'success' => true,
                 'tickets' => $tickets,
-                'user_id' => $user_id,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

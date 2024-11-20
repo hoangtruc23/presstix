@@ -33,14 +33,16 @@ Route::post('/payment/guest', [InvoiceController::class, 'handleInvoice']);
 Route::get('/event-list/{email}', [OrganizeEventController::class, 'getEventsByUserId'])->name('event.user');
 Route::post('/create-event', [EventController::class, 'store'])->name('create.event');
 
+Route::put('/event-update/{id}', [EventController::class, 'update'])->name('event.update');
+
 // TICKET 
 Route::post('/create-ticket', [TicketController::class, 'store'])->name('create.ticket');
 
 
-// ADMIN
-Route::controller(EventController::class)->group(function () {
-    Route::put('/event-update/{id}', 'update')->name('event.update');
-});
+// // ADMIN
+// Route::controller(EventController::class)->group(function () {
+//     Route::put('/event-update/{id}', 'update')->name('event.update');
+// });
 
 
 Route::get('/user', function (Request $request) {
@@ -56,7 +58,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/profile', [AuthController::class, 'profile']);
     Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
 });
-
 
 Route::middleware(['auth:sanctum', 'rolemanager:admin'])->group(function () {
     Route::prefix('admin')->group(function () {

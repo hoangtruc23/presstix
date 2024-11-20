@@ -24,12 +24,12 @@ function EventDetail() {
 
   return (
     <div>
-      <div className='h-[60vh] bg-[#333333]'>
-        <div className='d-flex w-[100%] h-[60vh] justify-center items-center'>
+      <div className='h-[60vh]'>
+        <div className='d-flex w-[100%] h-[60vh] justify-center items-center '>
           <div className="rounded-3xl w-[700px] h-[400px]">
             <img src={eventDetail?.images[1]?.image_url} className='rounded-3xl w-[700px] h-[400px]' />
           </div>
-          <div className="rounded-3xl w-[300px] h-[400px] p-[20px] bg-[#6c6c6c]">
+          <div className="rounded-3xl w-[300px] h-[400px] p-[20px] bg-blue-500">
             <h2 className='font-semibold text-[22px] text-white'>{eventDetail?.name}</h2>
             <div className='d-flex gap-3 items-center text-white'>
               <i className="fa-solid fa-clock"></i>
@@ -50,7 +50,7 @@ function EventDetail() {
         <div className='w-[60%]'>
           <div className='min-h-[350px]'>
             <h2>Thông tin sự kiện</h2>
-            <div className="">
+            <div className="text-lg">
               <div
                 className="h-[600px] overflow-y-scroll border shadow-sm p-3 rounded-xl"
                 dangerouslySetInnerHTML={{ __html: eventDetail?.description }}
@@ -66,14 +66,15 @@ function EventDetail() {
         <div className='w-[40%]'>
           <div className='booking-event border-6 min-h-[200px]'>
             <TicketTable ticketType={ticketType} />
-
           </div>
         </div>
 
       </div>
       <div className='container'>
         <h2>Có thể bạn cũng thích</h2>
-        <CarouselItems />
+        <div className="px-[100px]">
+          <CarouselItems />
+        </div>
       </div>
     </div>
   )

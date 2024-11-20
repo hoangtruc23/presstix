@@ -16,18 +16,22 @@ function InvoicesByUser() {
     return (
         <div className="overflow-hidden">
             <div className="max-h-[600px] overflow-y-auto p-3 border border-gray-300 rounded-lg">
-                {invoiceList && invoiceList.map((invoice, index) => (
-                    <button 
-                        type="button" 
-                        className='d-flex items-center gap-5 border border-1 w-full p-3 my-3 rounded-xl hover:bg-gray-100 transition-all' 
-                        key={index} 
-                        data-toggle="modal" 
+                {invoiceList && invoiceList.lenghth > 0 ? invoiceList.map((invoice, index) => (
+                    <button
+                        type="button"
+                        className='d-flex items-center gap-5 border border-1 w-full p-3 my-3 rounded-xl hover:bg-gray-100 transition-all'
+                        key={index}
+                        data-toggle="modal"
                         data-target="#modalInvoiceDetail"
                     >
                         <h3 className="text-lg font-semibold">{invoice.status}</h3>
                         <p className="text-sm text-gray-500">{invoice.invoice_date}</p>
                     </button>
-                ))}
+                ))
+
+                    : (
+                        <div className="text-center text-gray-500 ">Chưa có giao dịch nào</div>
+                    )}
             </div>
 
             <div className="modal fade" id="modalInvoiceDetail" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

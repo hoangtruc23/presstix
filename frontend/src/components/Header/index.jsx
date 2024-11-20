@@ -49,6 +49,7 @@ function Header() {
                             {item.title}
                         </Link>
                     ))}
+
                 </nav>
                 <div className="flex items-center gap-6 relative">
                     {isAuthenticated ? (
@@ -61,34 +62,44 @@ function Header() {
                                 <span>{account.name}</span>
                             </button>
                             {dropdownOpen && (
-                                <div className="absolute right-0 mt-2 bg-white border rounded-lg shadow-lg w-48 text-sm">
-                                    <ul>
-                                        <li>
-                                            <Link
-                                                to="/profile"
-                                                className="block px-4 py-2 hover:bg-gray-100"
-                                            >
-                                                Profile
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                to="/organizer"
-                                                className="block px-4 py-2 hover:bg-gray-100"
-                                            >
-                                                My Organizer
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <button
-                                                onClick={handleLogout}
-                                                className="block px-4 py-2 text-left w-full hover:bg-gray-100"
-                                            >
-                                                Logout
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <>
+                                    <div className="absolute right-0 mt-2 bg-white border rounded-lg shadow-lg w-48 text-sm">
+                                        <ul>
+                                            {account.role === 0 && (
+                                                <Link
+                                                    to="/admin"
+                                                    className="block px-4 py-2 hover:bg-gray-100"
+                                                >
+                                                    Admin
+                                                </Link>
+                                            )}
+                                            <li>
+                                                <Link
+                                                    to="/profile"
+                                                    className="block px-4 py-2 hover:bg-gray-100"
+                                                >
+                                                    Profile
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link
+                                                    to="/event-list"
+                                                    className="block px-4 py-2 hover:bg-gray-100"
+                                                >
+                                                    My Organizer
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <button
+                                                    onClick={handleLogout}
+                                                    className="block px-4 py-2 text-left w-full hover:bg-gray-100"
+                                                >
+                                                    Logout
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </>
                             )}
                         </div>
                     ) : (
@@ -108,7 +119,7 @@ function Header() {
             </div>
 
             <ModalLogin show={show} handleShow={handleShow} handleClose={handleClose} />
-        </header>
+        </header >
     );
 }
 

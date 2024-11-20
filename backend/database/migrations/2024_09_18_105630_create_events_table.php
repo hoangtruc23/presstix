@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('slot');
             $table->date('time_start');
             $table->date('time_end');
-            $table->string('policy');
+            $table->text('policy');
             $table->string('status');
             $table->text('description');
             $table->foreignId('event_cate_id')->constrained('event_categories');

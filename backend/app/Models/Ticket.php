@@ -22,8 +22,8 @@ class Ticket extends Model
         return $this->belongsTo(Invoice::class);
     }
 
-    public function events()
-    {
-        return $this->belongsToMany(Event::class);
-    }
+    public function event()
+{
+    return $this->belongsTo(Event::class);
+}
 }

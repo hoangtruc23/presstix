@@ -30,7 +30,6 @@ class EventResource extends JsonResource
            
             'images' => $this->images->map(function ($image) {
                 return [
-                    // 'image_url' => asset('storage/' . $image->image_url),
                     'image_url' => asset($image->image_url),
                     'is_featured' => $image->is_featured,
                 ];
