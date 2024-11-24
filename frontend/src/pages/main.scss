@@ -2,10 +2,9 @@
 .contact-block {
     display: flex;
     margin: auto;
-    color: white;
+    background-color: #f4f4f4;
     border-radius: 30px;
     padding: 50px;
-    background: linear-gradient(to right, #d9d9d9, #c0c0c0);
     box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
 
 }
@@ -19,6 +18,3 @@
     border-radius: 1rem;
 }
 
-.ck-content {
-    min-height: 300px;
-}

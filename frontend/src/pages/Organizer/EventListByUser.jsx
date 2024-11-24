@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getEventByUser } from "../../services/apiService"
 import { useSelector } from "react-redux";
 import ManageEventByOriganizer from "../../components/Tables/ManageEventByOriganer";
@@ -8,19 +8,19 @@ function EventListByUser() {
     const account = useSelector(state => state.auth);
     const [eventList, setEventList] = useState([]);
 
-    const fetchEventByUser = async () => {
+    const fetchEventByUser = useCallback(async () => {
         const res = await getEventByUser(account.account.id);
         setEventList(res.data.events);
-    }
-
-    useEffect(() => {
-        fetchEventByUser();
-    }, []);
+    }, [account.account.id]);
 
     const handleFetchEvent = async () => {
         await fetchEventByUser();
     };
 
+
+    useEffect(() => {
+        fetchEventByUser();
+    }, [fetchEventByUser]);
 
     return (
         <div>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import ModalRemoveEvent from '../Modals/ModalRemoveEvent';
 import ModalUpdateEvent from '../Modals/ModalUpdateEvent';
 import { toast } from 'react-toastify';
-import { putUpdateEvent } from '../../services/apiService';
+import { putUpdateEventStatus } from '../../services/apiService';
 
 
 function ManageEventTable(props) {
@@ -27,16 +27,18 @@ function ManageEventTable(props) {
     const handleChangeStatus = async (e, event) => {
         try {
             const selectedStatus = e.target.value;
-          
-            const res = await putUpdateEvent(event.id, selectedStatus);
+
+            const res = await putUpdateEventStatus(event.id, selectedStatus);
             if (res.data.message) {
                 toast.success(res.data.message);
+                const updatedEventList = eventList.map((item) =>
+                    item.id === event.id ? { ...item, status: selectedStatus } : item
+                );
+                handleFetchEvent(updatedEventList); 
             }
         } catch (error) {
             toast.error('Chưa thể cập nhật! Kiểm tra lại' + error);
         }
-
-
     }
 
 
@@ -66,9 +68,11 @@ function ManageEventTable(props) {
                         <td>{event.slot}</td>
                         <td>{event.event_cate_id}</td>
                         <td>
-                            <select className="form-select p-2 rounded-2xl bg-primary text-white" onChange={(e) => handleChangeStatus(e, event)}>
-                                <option value="active" selected={event.status === "active"}>Active</option>
-                                <option value="expired" selected={event.status === "expired"}>Expired</option>
+                            <select className="form-select p-2 rounded-2xl bg-primary text-white"
+                                value={event.status}
+                                onChange={(e) => handleChangeStatus(e, event)}>
+                                <option value="active">Active</option>
+                                <option value="expired">Expired</option>
                             </select>
                         </td>
                         <td className='d-flex gap-2'>

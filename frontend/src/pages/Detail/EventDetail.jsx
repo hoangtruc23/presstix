@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import TicketTable from '../../components/Tables/TicketTable';
 import { getEventDetail } from '../../services/apiService'
-import HostEvent from '../../components/Event/HostEvent';
 import CarouselItems from '../../components/Carousel/CarouselItems';
 
 
@@ -16,7 +15,6 @@ function EventDetail() {
     const res = await getEventDetail(slug.id);
     setEventDetail(res.data.data);
     setTicketType(res.data.data.ticket_type);
-
   }
   useEffect(() => {
     fetchEventDetail();
@@ -56,10 +54,6 @@ function EventDetail() {
                 dangerouslySetInnerHTML={{ __html: eventDetail?.description }}
               />
             </div>
-          </div>
-
-          <div className='min-h-[250px]'>
-            <HostEvent />
           </div>
 
         </div>

@@ -17,7 +17,6 @@ function CreateTicketType(props) {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // Cập nhật giá trị trong ticketType
         const updatedTicketType = {
             ...ticketType,
             [name]: name === "price" ? parseFloat(value) || 0 : name === "quantity" ? parseInt(value) || 1 : value,
@@ -25,7 +24,6 @@ function CreateTicketType(props) {
 
         setTicketType(updatedTicketType);
 
-        // Cập nhật listTicketType
         setListTicketType((prev) => {
             const newList = [...prev];
             if (newList.length < quantity) {

@@ -5,6 +5,10 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo } from 'ckeditor5';
 import 'ckeditor5/ckeditor5.css';
 import './modal.scss'
+import EventCateList from '../Event/EventCateList';
+import { putUpdateEvent } from '../../services/apiService';
+import { toast } from 'react-toastify';
+
 function ModalUpdateEvent({ show, setShow, event }) {
   const [formData, setFormData] = useState({
     name: '',
@@ -15,11 +19,9 @@ function ModalUpdateEvent({ show, setShow, event }) {
     description: '',
     status: 'available',
     ticket_type: [],
-    event_cate_id: 1,
+    event_cate_id: '',
     images: [],
   });
-
-  console.log({ event });
 
   useEffect(() => {
     if (event) {
@@ -31,10 +33,11 @@ function ModalUpdateEvent({ show, setShow, event }) {
         policy: event.policy || '',
         description: event.description || '',
         status: event.status || 'available',
-        ticket_types: event.ticket_types || [],
+        ticket_type: event.ticket_type || [],
         event_cate_id: event.event_cate_id || 1,
         images: event.images || [],
       });
+
     }
   }, [event]);
 
@@ -47,9 +50,9 @@ function ModalUpdateEvent({ show, setShow, event }) {
 
   const handleTicketChange = (index, e) => {
     const { name, value } = e.target;
-    const updatedTicketTypes = [...formData.ticket_types];
+    const updatedTicketTypes = [...formData.ticket_type];
     updatedTicketTypes[index] = { ...updatedTicketTypes[index], [name]: value };
-    setFormData((prevData) => ({ ...prevData, ticket_types: updatedTicketTypes }));
+    setFormData((prevData) => ({ ...prevData, ticket_type: updatedTicketTypes }));
   };
 
   const handleImageChange = (e) => {
@@ -59,55 +62,67 @@ function ModalUpdateEvent({ show, setShow, event }) {
       reader.onloadend = () => {
         setFormData((prevData) => ({
           ...prevData,
-          images: [reader.result],
+          images: [...(prevData.images || []), file], // Lưu file gốc
+          previews: [...(prevData.previews || []), reader.result], // Lưu Base64 để xem trước
         }));
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Đọc file dưới dạng URL
     }
   };
-
   const handleAddTicketType = () => {
     setFormData((prevData) => ({
       ...prevData,
-      ticket_types: [...prevData.ticket_types, { name: '', price: '', quantity: '' }],
+      ticket_type: [...prevData.ticket_type, { name: '', price: '', quantity: '' }],
     }));
   };
 
   const handleRemoveTicketType = (index) => {
-    const updatedTicketTypes = formData.ticket_types.filter((_, i) => i !== index);
-    setFormData((prevData) => ({ ...prevData, ticket_types: updatedTicketTypes }));
+    const updatedTicketTypes = formData.ticket_type.filter((_, i) => i !== index);
+    setFormData((prevData) => ({ ...prevData, ticket_type: updatedTicketTypes }));
   };
 
   const handleEditorChange = (name, editor) => {
-    const newData = editor.getData();  // Lấy dữ liệu từ CKEditor
-    console.log(`${name} đã thay đổi:`, newData); // In ra console để kiểm tra giá trị mới
+    const newData = editor.getData();
 
     setFormData((prevData) => ({
       ...prevData,
-      [name]: newData,  // Cập nhật đúng trường tương ứng với name
+      [name]: newData,
     }));
   };
 
-  const handleConfirm = () => {
+  const handleConfirmUpdateEvent = async () => {
     const formDataToSubmit = new FormData();
 
+
     Object.entries(formData).forEach(([key, value]) => {
-      if (key !== 'ticket_types' && key !== 'images') {
+      if (key !== 'ticket_type' && key !== 'images') {
         formDataToSubmit.append(key, value);
       }
     });
 
-    formDataToSubmit.append('ticket_types', JSON.stringify(formData.ticket_types));
-
+    formData.ticket_type.forEach((ticketType, index) => {
+      formDataToSubmit.append(`ticket_types[${index}][name]`, ticketType.name);
+      formDataToSubmit.append(`ticket_types[${index}][price]`, ticketType.price);
+      formDataToSubmit.append(`ticket_types[${index}][quantity]`, ticketType.quantity);
+    });
 
     formData.images.forEach((image) => {
       formDataToSubmit.append('images[]', image);
     });
 
-    for (let [key, value] of formDataToSubmit.entries()) {
-      console.log(key, value);
-    }
+    formData.images.forEach((image, index) => {
+      console.log(`Image ${index}:`, image);
+    });
 
+
+    try {
+      const res = await putUpdateEvent(event.id, formDataToSubmit);
+      toast.success(res.data.message)
+      handleClose();
+      console.log({ res });
+    } catch (error) {
+      toast.error(error.message)
+    }
   };
 
   return (
@@ -125,6 +140,7 @@ function ModalUpdateEvent({ show, setShow, event }) {
                   onChange={handleImageChange}
                   id="logo-upload"
                 />
+
                 {formData.images && formData.images.length > 0 ? (
                   <img
                     src={formData.images[0].image_url}
@@ -135,6 +151,8 @@ function ModalUpdateEvent({ show, setShow, event }) {
                 ) : (
                   <p>No image available</p>
                 )}
+
+             
               </div>
               {/* <div className="form-control rounded-xl min-h-60 h-auto">
                 <label>Ảnh bìa sự kiện: </label>
@@ -157,27 +175,22 @@ function ModalUpdateEvent({ show, setShow, event }) {
             </Row>
 
             <Row className="mb-3">
+              <Form.Group as={Col} controlId="formGridCategory">
+                <Form.Label>Loại sự kiện</Form.Label>
+                <EventCateList handleInputChange={handleInputChange} />
+              </Form.Group>
+
               <Form.Group as={Col} controlId="formGridStatus">
                 <Form.Label>Trạng thái</Form.Label>
-                <Form.Select
+                <Form.Control
+                  as="select"
                   name="status"
+                  className={`${formData.status === "available" ? "bg-primary" : "bg-danger"} text-white`}
                   value={formData.status}
                   onChange={handleInputChange}
                 >
                   <option value="available">Available</option>
                   <option value="expired">Expired</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group as={Col} controlId="formGridCategory">
-                <Form.Label>Loại sự kiện</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="event_cate_id"
-                  value={formData.event_cate_id}
-                  onChange={handleInputChange}
-                >
-                  <option value="1">Category 1</option>
-                  <option value="2">Category 2</option>
                 </Form.Control>
               </Form.Group>
             </Row>
@@ -216,33 +229,33 @@ function ModalUpdateEvent({ show, setShow, event }) {
               </Form.Group>
             </Row>
 
-            <Row className="mb-3">
+            <Row className="mb-3 edit-policy">
               <Form.Group as={Col} controlId="formGridPolicy">
                 <Form.Label>Policy</Form.Label>
                 <CKEditor
                   name="policy"
-                  onChange={(event, editor) => handleEditorChange('policy', editor)}
                   editor={ClassicEditor}
+                  data={formData.policy || ''}
+                  onChange={(event, editor) => handleEditorChange('policy', editor)}
                   config={{
                     toolbar: ['undo', 'redo', '|', 'bold', 'italic'],
                     plugins: [Bold, Essentials, Italic, Mention, Paragraph, Undo],
-                    initialData: formData.policy,
                   }}
                 />
               </Form.Group>
             </Row>
 
-            <Row className="mb-3">
+            <Row className="mb-3 edit-desc">
               <Form.Group as={Col} controlId="formGridDescription">
                 <Form.Label>Thông tin sự kiện</Form.Label>
                 <CKEditor
                   name="description"
                   onChange={(event, editor) => handleEditorChange('description', editor)}
                   editor={ClassicEditor}
+                  data={formData.description || ''}
                   config={{
                     toolbar: ['undo', 'redo', '|', 'bold', 'italic'],
                     plugins: [Bold, Essentials, Italic, Mention, Paragraph, Undo],
-                    initialData: formData.description,
                   }}
                 />
               </Form.Group>
@@ -250,7 +263,7 @@ function ModalUpdateEvent({ show, setShow, event }) {
 
             <h5>Loại vé</h5>
 
-            {/* {event?.ticket_type.map((ticket, index) => (
+            {formData?.ticket_type.map((ticket, index) => (
               <Row key={index} className="mb-3">
                 <Form.Group as={Col} controlId={`formGridTicketName${index}`}>
                   <Form.Label>Tên vé</Form.Label>
@@ -258,7 +271,7 @@ function ModalUpdateEvent({ show, setShow, event }) {
                     type="text"
                     name="name"
                     value={ticket.name}
-                    onChange={(e) => handleTicketChange(index, e)}  // Gọi hàm cập nhật
+                    onChange={(e) => handleTicketChange(index, e)}
                   />
                 </Form.Group>
                 <Form.Group as={Col} controlId={`formGridTicketPrice${index}`}>
@@ -267,21 +280,44 @@ function ModalUpdateEvent({ show, setShow, event }) {
                     type="number"
                     name="price"
                     value={ticket.price}
-                    onChange={(e) => handleTicketChange(index, e)}  // Gọi hàm cập nhật
+                    onChange={(e) => handleTicketChange(index, e)}
+                  />
+                </Form.Group>
+
+                <Form.Group as={Col} controlId={`formGridTicketPrice${index}`}>
+                  <Form.Label>Số lượng vé</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="price"
+                    disabled={true}
+                    value={ticket.quantity}
+                    onChange={(e) => handleTicketChange(index, e)}
+                  />
+                </Form.Group>
+                <Form.Group as={Col} controlId={`formGridTicketPrice${index}`}>
+                  <Form.Label>Số vé đã bán</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="price"
+                    disabled={true}
+                    value={ticket.quantity_sold}
+                    onChange={(e) => handleTicketChange(index, e)}
                   />
                 </Form.Group>
                 <Form.Group as={Col} controlId={`formGridTicketQuantity${index}`}>
-                  <Form.Label>Số lượng</Form.Label>
+                  <Form.Label>Số vé thêm</Form.Label>
                   <Form.Control
                     type="number"
                     name="quantity"
-                    value={ticket.quantity}
-                    onChange={(e) => handleTicketChange(index, e)}  // Gọi hàm cập nhật
+                    onChange={(e) => handleTicketChange(index, e)}
                   />
                 </Form.Group>
-                <Button variant="danger" onClick={() => handleRemoveTicketType(index)}>Xóa vé</Button>
+
+                <Form.Group className='mt-auto'>
+                  <Button variant="danger" onClick={() => handleRemoveTicketType(index)}>Xóa vé</Button>
+                </Form.Group>
               </Row>
-            ))} */}
+            ))}
 
             <Button variant="secondary" onClick={handleAddTicketType}>Thêm loại vé</Button>
 
@@ -294,7 +330,7 @@ function ModalUpdateEvent({ show, setShow, event }) {
 
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-        <Button variant="primary" onClick={handleConfirm}>Confirm</Button>
+        <Button variant="primary" onClick={handleConfirmUpdateEvent}>Confirm</Button>
       </Modal.Footer>
     </Modal>
   );

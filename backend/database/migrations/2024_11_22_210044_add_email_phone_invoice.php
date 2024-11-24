@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ticket_types', function (Blueprint $table) {
-            $table->enum('status', ['available', 'expired', 'used', 'cancelled'])->default('available');
+        Schema::table('invoices', function (Blueprint $table) {
+            $table->string('email'); 
+            $table->string('phone'); 
         });
     }
 
@@ -21,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('ticket_types', function (Blueprint $table) {
-            $table->dropColumn('status');
+        Schema::table('invoices', function (Blueprint $table) {
+            $table->dropColumn(['email', 'phone']);
         });
     }
 };

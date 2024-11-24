@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name'); 
             $table->integer('price');
             $table->integer('quantity');
-            $table->boolean('status')->default(true);
+            $table->string('status')->default('available');
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

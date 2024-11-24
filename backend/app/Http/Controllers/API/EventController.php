@@ -36,19 +36,15 @@ class EventController extends Controller
                 $q->where('name', 'LIKE', '%' . $search . '%');
             });
         }
+
         $events = $query->with('images')
-        ->where('status','active')
-        ->get();
+            ->where('status', 'active')
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
         return response()->json([
             'data' => EventResource::collection($events),
             'events' => $events,
-            // 'meta' => [
-            //     'current_page' => $events->currentPage(),
-            //     'last_page' => $events->lastPage(),
-            //     'per_page' => $events->perPage(),
-            //     'total' => $events->total(),
-            // ],
         ], Response::HTTP_OK);
     }
 
@@ -135,6 +131,27 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    public function updateStatusEvent(Request $request, string $id)
+    {
+        $event = Event::findOrFail($id);
+        try {
+            $data = $request->validate([
+                'status' => 'nullable|string|',
+            ]);
+            $event->status = $data['status'];
+            $event->save();
+            return response()->json([
+                'message' => 'Cập nhật thành công',
+            ], Response::HTTP_OK);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation errors occurred',
+                'errors' => $e->errors()
+            ], 422);
+        }
+    }
+
     public function update(Request $request, string $id)
     {
         $event = Event::findOrFail($id);
@@ -150,10 +167,11 @@ class EventController extends Controller
                 'ticket_types.*.name' => 'nullable|string|max:255',
                 'ticket_types.*.price' => 'nullable|integer',
                 'ticket_types.*.quantity' => 'nullable|integer|min:1',
+                'images' => 'nullable|array',
+                'images.*' => 'nullable|image|max:1024',
                 'slot' => 'nullable|integer',
                 'event_cate_id' => 'nullable|integer|exists:event_categories,id',
                 'description' => 'nullable|string',
-                // 'status' => 'nullable|string|in:available,used,cancelled',
                 'status' => 'nullable|string|',
             ]);
 
@@ -190,6 +208,7 @@ class EventController extends Controller
                 $event->description = $request->description;
             }
 
+           
             if ($request->has('ticket_types')) {
                 $ticketTypesData = $request->ticket_types;
                 $event->slot = array_sum(array_column($ticketTypesData, 'quantity'));
@@ -200,14 +219,14 @@ class EventController extends Controller
                     if ($eventTicket) {
                         $eventTicket->update([
                             'price' => $ticketType['price'],
-                            'quantity' => $ticketType['quantity'],
+                            'quantity' => $eventTicket['quantity'] + $ticketType['quantity'],
                         ]);
                     } else {
                         TicketType::create([
                             'name' => $ticketType['name'],
                             'price' => $ticketType['price'],
                             'quantity' => $ticketType['quantity'],
-                            'status' => true,
+                            'status' => 'available',
                             'event_id' => $event->id,
                         ]);
                     }
@@ -216,7 +235,10 @@ class EventController extends Controller
 
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
+
                     $imagePath = $image->store('events', 'public');
+                    var_dump($imagePath);
+                    die();
                     EventImage::create([
                         'event_id' => $event->id,
                         'image_url' => '/storage/' . $imagePath,
@@ -227,7 +249,7 @@ class EventController extends Controller
             $event->save();
 
             return response()->json([
-                'event' => $event->load('images'),
+                'success' => true,
                 'message' => 'Cập nhật thành công',
             ], Response::HTTP_OK);
         } catch (ValidationException $e) {

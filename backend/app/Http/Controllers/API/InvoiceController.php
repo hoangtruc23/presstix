@@ -22,6 +22,8 @@ class InvoiceController extends Controller
         $invoice = new Invoice();
         $invoice->invoice_date = now();
         $invoice->amount = $request['amount'];
+        $invoice->email = $request['email'];
+        $invoice->phone = $request['phone'];
         $invoice->description = $request['description'];
         if ($user) {
             $invoice->user_id = $user->id;
@@ -39,7 +41,9 @@ class InvoiceController extends Controller
     {
         $user_id = Auth::id();
 
-        $invoices = Invoice::where('user_id', $user_id)->get();
+        $invoices = Invoice::where('user_id', $user_id)
+        ->orderBy('created_at','desc')
+        ->get();
     
         return response()->json([
             'success' => true,

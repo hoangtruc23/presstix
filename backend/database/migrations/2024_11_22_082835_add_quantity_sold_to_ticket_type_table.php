@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('ticket_types', function (Blueprint $table) {
-            $table->enum('status', ['available', 'expired', 'used', 'cancelled'])->default('available');
+            $table->integer('quantity_sold')->nullable()->after('quantity');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('ticket_types', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn('quantity_available'); 
         });
     }
 };

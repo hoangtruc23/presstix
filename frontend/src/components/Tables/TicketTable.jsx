@@ -1,53 +1,87 @@
 import { useState, useEffect } from 'react'
+import * as Yup from 'yup';
+import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
 import ModalBooking from '../../components/Modals/ModalBooking';
 import './table.scss'
-import PropTypes from 'prop-types';
+
+
+const validationSchema = Yup.array().of(
+    Yup.object().shape({
+        quantity: Yup.number()
+            .min(1, 'Số lượng phải lớn hơn 0')
+            .required('Hãy nhập số lượng vé')
+    })
+);
+
 function TicketTable(props) {
     const { ticketType } = props;
     const [totalPrice, setTotalPrice] = useState(0);
     const [cart, setCart] = useState([]);
     const [show, setShow] = useState(false);
     const [isPolling, setIsPolling] = useState(false);
+    const [disabled, setDisabled] = useState(true);
 
     const handleClose = () => {
         setShow(false);
         setIsPolling(false);
     }
 
-    const handleShow = () => setShow(true);
+    const handleShow = async () => {
+        try {
+            await validationSchema.validate(cart, { abortEarly: false });
+            setShow(true);
+        } catch (error) {
+            toast.error("error" + error);
+        }
+    };
 
     const handleChooseTicket = (ticket, quantity) => {
-        const qty = parseInt(quantity) || 0;
-        const price = ticket.price * qty;
+        const qty_total = ticket.quantity;
+        const qty_sold = ticket.quantity_sold;
+        const remainingTickets = qty_total - qty_sold;
 
+        if(quantity==''){
+            quantity = 0;
+            return;
+        }
+        if (quantity > remainingTickets) {
+            toast.error(`Số lượng vé chỉ còn ${remainingTickets} vé`);
+            setDisabled(true);
+            return;
+        }
+
+
+    
+        setDisabled(false);
+        const price = ticket.price * quantity;
         setCart((prev) => {
-            const exitsTicket = prev.find(item => item.name === ticket.name);
-            if (exitsTicket) {
+            const existingTicket = prev.find((item) => item.name === ticket.name);
+            if (existingTicket) {
                 return prev.map((item) =>
                     item.name === ticket.name
-                        ? { ...item, quantity: qty, price: price }
+                        ? { ...item, quantity: quantity, price }
                         : item
-                )
+                );
             } else {
-                return [...prev, { ...ticket, quantity: qty, price: price }];
+                return [...prev, { ...ticket, quantity: quantity, price }];
             }
         });
     };
 
-    console.log({cart});
-
     const calculatorPrice = () => {
-        const total = cart.reduce((acc, current) => acc + (current.price), 0);
+        const total = cart.reduce((acc, current) => acc + current.price, 0);
         setTotalPrice(total);
     }
+    console.log({cart});
 
     useEffect(() => {
         calculatorPrice();
     }, [cart]);
 
     return (
-        <table className="table-booking-ticket table table-striped  bg-[#f0f0f0] my-3">
+        <table className="table-booking-ticket table table-striped bg-[#f0f0f0] my-3">
             <thead>
                 <tr>
                     <th colSpan='4' className='text-xl'>Các loại vé</th>
@@ -56,18 +90,30 @@ function TicketTable(props) {
             <tbody>
                 {ticketType.map((ticket, index) => (
                     <tr key={index}>
-                        <td className="align-middle">{ticket.name}</td>
-                        <td className="align-middle w-[200px]">{ticket.price}</td>
-                        <td className='w-[70px]'>
-                            <input type='number' className='w-[100px] p-[10px]' onChange={(e) => handleChooseTicket(ticket, e.target.value)} />
+                        <td className="align-middle w-[40%] text-xl">{ticket.name}</td>
+                        <td className="align-middle w-[40%] text-xl">{ticket.price}</td>
+                        <td className='w-[30%] text-center'>
+                            {ticket.quantity === ticket.quantity_sold ?
+                                <h3>Sold out</h3>
+                                : <input
+                                    type='number'
+                                    name='quantity'
+                                    defaultValue={0}
+                                    className='w-[100px] p-[10px]'
+                                    onInput={(e) => {
+                                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                    }}
+                                    onChange={(e) => handleChooseTicket(ticket, e.target.value)} />
+                            }
+                           
                         </td>
                     </tr>
                 ))}
                 <tr>
                     <th className="align-middle" colSpan='1'>Tổng tiền</th>
-                    <th className="align-middle" colSpan='1'>{totalPrice}</th>
+                    <th className="align-middle text-xl text-blue-500" colSpan='1'>{totalPrice}</th>
                     <th className="align-middle" colSpan='1'>
-                        <Button className="float-right bg-danger border-0 w-full" onClick={handleShow}>
+                        <Button className="float-right bg-danger border-0 w-full" disabled={disabled} onClick={handleShow}>
                             Đặt vé
                         </Button>
                         <ModalBooking
@@ -80,17 +126,13 @@ function TicketTable(props) {
                         />
                     </th>
                 </tr>
-
             </tbody>
-
         </table>
     )
 }
-
 
 TicketTable.propTypes = {
     ticketType: PropTypes.array.isRequired,
 };
 
-
-export default TicketTable
+export default TicketTable;

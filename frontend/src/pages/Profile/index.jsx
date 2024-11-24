@@ -85,9 +85,7 @@ function Profile() {
                     <li className="nav-item">
                         <a className="nav-link" id="profile-tab" data-toggle="tab" href="#TicketCancelled" role="tab" aria-controls="profile" aria-selected="false">Vé đã huỷ</a>
                     </li>
-                    <li className="nav-item">
-                        <a className="nav-link" id="profile-tab" data-toggle="tab" href="#TransactionHistory" role="tab" aria-controls="profile" aria-selected="false">Lịch sử giao dịch</a>
-                    </li>
+                  
 
                 </ul>
                 <div className="tab-content" id="myTabContent">
@@ -95,11 +93,11 @@ function Profile() {
                         <TicketSuccess />
                     </div>
                     <div className="tab-pane fade" id="TicketCancelled" role="tabpanel" aria-labelledby="profile-tab">
-                        1
+                        
                     </div>
-                    <div className="tab-pane fade" id="TransactionHistory" role="tabpanel" aria-labelledby="profile-tab">
+                    {/* <div className="tab-pane fade" id="TransactionHistory" role="tabpanel" aria-labelledby="profile-tab">
                         <InvoicesByUser />
-                    </div>
+                    </div> */}
 
                 </div>
             </div>

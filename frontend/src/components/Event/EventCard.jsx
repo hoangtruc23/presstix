@@ -2,46 +2,40 @@ import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 
 function EventCard(props) {
-    const { event, layout } = props;
+    const { event } = props;
+    
     return (
-        <>
-            {layout === 'explore' ? (
-                <div className='d-flex gap-4 cursor-pointer hover:shadow-lg hover:bg-slate-100 p-3'>
-                    <img src={event?.images[0]?.image_url} className='w-[45%]' />
-                    <div>
-                        <h4 className='line-clamp-1'>{event?.name}</h4>
-                        <div className="d-flex">
-                            <h5>{dayjs(event?.time_start).format('HH : mm') + ' - ' + dayjs(event?.time_end).format('HH : mm / ')}</h5>
-                            <h5>{dayjs(event?.time_start).format('DD - MM ')}</h5>
-                        </div>
-                    </div>
+        <div
+            key={event.id}
+            className="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition-shadow duration-300 hover:scale-105"
+        >
+            <img
+                src={event?.images[0]?.image_url}
+                alt="Event"
+                className="w-full h-[200px] object-cover rounded-lg mb-4"
+            />
+            <div className="flex flex-col">
+                <div className="font-semibold text-lg text-blue-600 mb-2">
+                    <h4 className="text-xl font-semibold text-gray-800 mb-2 line-clamp-1">{event?.name}</h4>
+
                 </div>
-            ) : (
-                <>
-                    <img src={event?.images[0]?.image_url} alt="Event" className='h-80' />
-                    <div className="d-flex gap-3 p-[10px]">
-                        <div className='text-center font-semibold'>
-                            <h3 className='w-max'>{dayjs(event?.time_start).format('DD-MM')}</h3>
-                        </div>
-                        <div className='w-[80%]'>
-                            <h4 className='line-clamp-1'>{event?.name}</h4>
-                            <div className='flex items-center gap-1'>
-                                <h3 className='m-0'>{dayjs(event?.time_start).format('HH:mm')}</h3>
-                                <span>-</span>
-                                <h3 className='m-0'>{dayjs(event?.time_end).format('HH:mm')}</h3>
-                            </div>
-                            <p>Interest</p>
-                        </div>
+                <div className="mb-3 d-flex gap-5">
+                    <h3 className="m-0">{dayjs(event?.time_start).format('DD-MM')}</h3>
+                    <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                        <span className="font-medium">{dayjs(event?.time_start).format('HH:mm')}</span>
+                        <span className="text-gray-400">-</span>
+                        <span className="font-medium">{dayjs(event?.time_end).format('HH:mm')}</span>
                     </div>
-                </>
-            )}
-        </>
-    )
+                        
+                </div>
+                <p className="m-0 text-lg">Giá từ: {event?.ticket_type[0].price}</p>
+            </div>
+        </div>
+    );
 }
 
 EventCard.propTypes = {
     event: PropTypes.object.isRequired,
-    layout: PropTypes.string,
-}
+};
 
-export default EventCard
+export default EventCard;

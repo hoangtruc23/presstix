@@ -34,16 +34,13 @@ Route::get('/event-list/{email}', [OrganizeEventController::class, 'getEventsByU
 Route::post('/create-event', [EventController::class, 'store'])->name('create.event');
 
 Route::put('/event-update/{id}', [EventController::class, 'update'])->name('event.update');
+Route::put('/event-update-status/{id}', [EventController::class, 'updateStatusEvent']);
 
 // TICKET 
 Route::post('/create-ticket', [TicketController::class, 'store'])->name('create.ticket');
 
 
 // // ADMIN
-// Route::controller(EventController::class)->group(function () {
-//     Route::put('/event-update/{id}', 'update')->name('event.update');
-// });
-
 
 Route::get('/user', function (Request $request) {
     return $request->user();

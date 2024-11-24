@@ -11,10 +11,6 @@ function Event() {
     const [search, setSearch] = useState("");
     const [events, setEvents] = useState([]);
 
-    const handleBtnSearchEvents = () => {
-        SearchEventsData();
-    };
-
     const SearchEventsData = async () => {
         try {
             const res = await searchEvents(search);
@@ -49,17 +45,14 @@ function Event() {
                 </div>
             </div>
 
-            <div className="container min-h-[600px] py-8">
-                <div className="flex gap-8">
-                    <div className="filter w-full md:w-[20%] bg-gray-100 p-6 rounded-xl shadow-lg">
-                        <h2 className="text-lg font-semibold mb-4 text-gray-900">Sắp xếp theo</h2>
-                        <FilterCateEvent />
-                    </div>
-
-                    <div className="w-full md:w-[80%]">
-                        <EventsListCard_2 events={events} />
-                    </div>
+            <div className="container min-h-[600px]">
+                <div className=" filter  md:w-[20%] bg-gray-100 p-6 mb-2 ">
+                    <h2 className="text-lg font-semibold mb-4 text-gray-900">Sắp xếp theo</h2>
+                    <FilterCateEvent />
                 </div>
+
+                <EventsListCard_2 events={events} />
+
             </div>
         </>
     );

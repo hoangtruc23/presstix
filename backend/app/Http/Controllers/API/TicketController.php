@@ -15,8 +15,12 @@ class TicketController extends Controller
     public function store(Request $request)
     {
 
-        // $request->validate([
-        // ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'event_id' => 'required|exists:events,id',
+            'invoice_id' => 'required|exists:invoices,id',
+        ]);
 
         $ticket = new Ticket();
 
@@ -24,8 +28,14 @@ class TicketController extends Controller
         $ticket->price = $request['price'];
         $ticket->event_id = $request['event_id'];
         $ticket->invoice_id = $request['invoice_id'];
-
         $ticket->save();
+
+        $ticket_type = TicketType::where('event_id', $request['event_id'])->first();
+        if ($ticket_type) {
+            $ticket_type->quantity_sold += $request['quantity'];
+            $ticket_type->save();
+        }
+
         return response()->json([
             'success' => true,
             'ticket' => $ticket,
@@ -38,11 +48,19 @@ class TicketController extends Controller
             $user_id = Auth::id();
 
             $tickets = Ticket::with('event')
+                ->orderBy('created_at', 'desc')
                 ->whereHas('invoice', function ($query) use ($user_id) {
                     $query->where('user_id', $user_id)
                         ->where('status', 'success');
                 })
                 ->get();
+
+            foreach ($tickets as $ticket) {
+                if ($ticket->event->time_end > time()) {
+                    $ticket->status = 'expired';
+                    $ticket->save();
+                }
+            }
 
             return response()->json([
                 'success' => true,

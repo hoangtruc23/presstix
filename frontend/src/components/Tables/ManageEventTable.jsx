@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types'
 import ModalRemoveEvent from '../Modals/ModalRemoveEvent';
-import { putUpdateEvent } from '../../services/apiService';
+import { putUpdateEventStatus } from '../../services/apiService';
 import { toast } from 'react-toastify';
 
 
@@ -21,7 +21,7 @@ function ManageEventTable(props) {
         try {
             const selectedStatus = e.target.value;
 
-            const res = await putUpdateEvent(event.id, selectedStatus);
+            const res = await putUpdateEventStatus(event.id, selectedStatus);
             if (res.data.message) {
                 toast.success(res.data.message);
             }

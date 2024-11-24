@@ -8,7 +8,7 @@ import { postLoginWithEmailPass } from '../../services/apiService'
 import { loginSuccess } from '../../redux/authReducer';
 
 function ModalLogin(props) {
-    const { show, handleClose, handleShow } = props;
+    const { show, handleClose } = props;
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
@@ -34,8 +34,8 @@ function ModalLogin(props) {
                 toast.error(res.data.message);
             }
         } catch (error) {
-            toast.error('Đăng nhập thất bại');
-            console.error(error);
+            toast.error('Đăng nhập thất bại' + error.message);
+           
         }
     }
 

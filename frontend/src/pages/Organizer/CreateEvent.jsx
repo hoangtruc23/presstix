@@ -102,7 +102,6 @@ function CreateEvent() {
     });
 
     try {
-      console.log({ payload });
       const res = await createNewEvent(payload);
       if (res.data.success) {
         toast.success('Tạo sự kiện thành công');

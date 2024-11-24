@@ -15,7 +15,7 @@ function PermissionRoute({ children, allowedRoles }) {
 
 PermissionRoute.propTypes = {
     children: PropTypes.object.isRequired,
-    allowedRoles: PropTypes.string,
+    allowedRoles: PropTypes.array,
 }
 
 export default PermissionRoute
