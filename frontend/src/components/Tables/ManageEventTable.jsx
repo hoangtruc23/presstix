@@ -49,7 +49,9 @@ function ManageEventTable(props) {
                 {eventList && eventList.map((event, index) => (
                     <tr key={index}>
                         <td>{event.id}</td>
-                        <td></td>
+                        <td>
+                            {/* <img className='w-[400px] h-[200px] object-contain' src={event?.images[0]?.image_url} alt="" /> */}
+                        </td>
                         <td>{event.name}</td>
                         <td>{event.time_start}</td>
                         <td>{event.time_end}</td>

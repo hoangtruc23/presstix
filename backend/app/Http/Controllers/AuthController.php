@@ -10,6 +10,34 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    public function signup(Request $request)
+    {
+        $name = $request->name;
+        $email = $request->email;
+        $password = $request->password;
+
+        $user = User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => bcrypt($password),
+            'phone' => $request->phone,
+        ]);
+
+        if(!$user){
+            return response()->json([
+                'success' => false,
+                'message' => "Đăng ký thất bại"
+            ]);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => "Đăng ký thành công"
+        ]);
+
+       
+    }
+
     public function login(Request $request)
     {
         $email = $request->email;
@@ -17,7 +45,6 @@ class AuthController extends Controller
 
         $status = Auth::attempt(['email' => $email, 'password' => $password]);
         if ($status) {
-            // Create token 
             $token = $request->user()->createToken('auth');
 
             $user = $request->user();

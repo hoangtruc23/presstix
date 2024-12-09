@@ -12,8 +12,11 @@ use Illuminate\Validation\ValidationException;
 use App\Models\Event;
 use App\Models\Image;
 use App\Http\Resources\EventResource;
+use App\Http\Resources\OrganizerResource;
 use App\Models\EventImage;
+use App\Models\Organizer;
 use App\Models\TicketType;
+use Carbon\Carbon;
 use SebastianBergmann\Type\TrueType;
 
 class EventController extends Controller
@@ -28,19 +31,29 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $query = Event::query();
+        $now = Carbon::now();
+        Event::where('status', 'active')
+            ->where('time_end', '<', $now)
+            ->update(['status' => 'expired']);
 
+        $search = $request->input('search');
+        $event_cate = $request->input('event_cate');
+        $query = Event::query();
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', '%' . $search . '%');
             });
+        }
+        
+        if ($event_cate) {
+            $query->where('event_cate_id', $event_cate);
         }
 
         $events = $query->with('images')
             ->where('status', 'active')
             ->orderBy('updated_at', 'desc')
             ->get();
+
 
         return response()->json([
             'data' => EventResource::collection($events),
@@ -75,7 +88,6 @@ class EventController extends Controller
             $data['slug'] = Str::slug($data['name']);
             $data['slot'] = array_sum(array_column($data['ticket_types'], 'quantity'));
 
-            // Tạo sự kiện mới
             $event = Event::create($data);
 
             foreach ($data['ticket_types'] as $ticketType) {
@@ -88,7 +100,6 @@ class EventController extends Controller
                 ]);
             }
 
-            // Lưu hình ảnh nếu có
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
                     $imagePath = $image->store('events', 'public');
@@ -119,12 +130,15 @@ class EventController extends Controller
     {
         $event = Event::where('slug', $slug)->first();
 
+        $organizer = Organizer::where('user_id', $event->user_id)->first();
+
         if (!$event) {
             abort(404, 'Event not found');
         }
 
         return response()->json([
             'data' => new EventResource($event),
+            'organizer' => new OrganizerResource($organizer)
         ], Response::HTTP_OK);
     }
 
@@ -208,7 +222,7 @@ class EventController extends Controller
                 $event->description = $request->description;
             }
 
-           
+
             if ($request->has('ticket_types')) {
                 $ticketTypesData = $request->ticket_types;
                 $event->slot = array_sum(array_column($ticketTypesData, 'quantity'));
@@ -235,7 +249,6 @@ class EventController extends Controller
 
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-
                     $imagePath = $image->store('events', 'public');
                     var_dump($imagePath);
                     die();

@@ -4,13 +4,13 @@ import { toast } from "react-toastify";
 
 function Footer() {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const handleBtnStartOrganizer = () => {
         if (!isAuthenticated) {
             toast.error("Vui lòng đăng nhập để tiếp tục!");
             return;
         }
-        navigate("/create-event"); 
+        navigate("/organizer");
     }
     return (
         <div className="min-h-40 bg-blue-500 text-white mt-[50px]">
@@ -21,7 +21,7 @@ function Footer() {
             <div className="d-flex gap-5 justify-between pb-12 px-32">
                 <div className="">
                     <div className="border-b-2 w-[200px] mb-3">
-                        <h4 className='text-[20px] text-uppercase font-semibold'>Contact Detail</h4>
+                        <h4 className='text-[20px] text-uppercase font-semibold'>Thông tin liên hệ</h4>
                     </div>
                     <p><span className='font-semibold'>Tel: </span>84732984793</p>
                     <p><span className='font-semibold'>Email: </span>admin@gmail.com</p>
@@ -29,7 +29,7 @@ function Footer() {
                 </div>
                 <div className="">
                     <div className="border-b-2 w-[200px] mb-3">
-                        <h4 className='text-[20px] text-uppercase font-semibold'>Menu</h4>
+                        <h4 className='text-[20px] text-uppercase font-semibold'>Danh sách</h4>
                     </div>
                     <ul>
                         <li> <a className='text-uppercase font-semibold'>Home</a></li>
@@ -42,7 +42,7 @@ function Footer() {
                 </div>
                 <div className="">
                     <div className="border-b-2 w-[200px] mb-3">
-                        <h4 className='text-[20px] text-uppercase font-semibold'>OUR PARTNERS</h4>
+                        <h4 className='text-[20px] text-uppercase font-semibold'>Đối tác của chúng tôi</h4>
                     </div>
                     <ul>
                         <li> <a className='text-uppercase font-semibold'>Home</a></li>
@@ -52,7 +52,10 @@ function Footer() {
                 </div>
                 <div className="w-[30%]">
                     <div className="border-2 mb-3 p-3">
-                        <p>We have a specialized team of Professionals, some of us with over 30 years in the hotel industry and other in the real estate, combined makes this a winning team ready to help you. We offer professional advise, maintaining discretion...</p>
+                        <p>
+                            PressTix hy vọng mang đến cho mọi người một website thân thiện, có thể mua vé dễ dàng và tiện lợi.
+                            Đồng thời cũng giúp các ban tổ chức nhỏ lẻ có thể quản lý sự kiện của mình dễ dàng và linh hoạt hơn
+                        </p>
                     </div>
 
                 </div>

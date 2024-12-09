@@ -21,8 +21,6 @@ const getInvoicesByUser = () => {
 }
 
 const postTicket = ({name, price, event_id, invoice_id,quantity}) => {
-    console.log("Sending data:", { name, price, event_id, invoice_id,quantity });
-
     return baseAPI.post('create-ticket', {
         name,
         price,

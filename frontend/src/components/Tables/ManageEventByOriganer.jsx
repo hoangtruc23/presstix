@@ -24,6 +24,8 @@ function ManageEventTable(props) {
         setShowRemove(true);
     }
 
+    console.log({eventList})
+
     const handleChangeStatus = async (e, event) => {
         try {
             const selectedStatus = e.target.value;
@@ -51,8 +53,6 @@ function ManageEventTable(props) {
                     <th>Tên</th>
                     <th>Thời gian bắt đầu</th>
                     <th>Thời gian kết thúc</th>
-                    <th>Chỗ</th>
-                    <th>Loại vé</th>
                     <th>Trạng thái</th>
                     <th></th>
                 </tr>
@@ -60,13 +60,13 @@ function ManageEventTable(props) {
             <tbody>
                 {eventList && eventList.map((event, index) => (
                     <tr key={index}>
-                        <td>{event.id}</td>
-                        <td></td>
+                        <td>{index + 1}</td>
+                        <td>
+                            <img className='w-[400px] h-[200px] object-contain' src={event?.images[0]?.image_url} alt="" />
+                        </td>
                         <td>{event.name}</td>
                         <td>{event.time_start}</td>
                         <td>{event.time_end}</td>
-                        <td>{event.slot}</td>
-                        <td>{event.event_cate_id}</td>
                         <td>
                             <select className="form-select p-2 rounded-2xl bg-primary text-white"
                                 value={event.status}

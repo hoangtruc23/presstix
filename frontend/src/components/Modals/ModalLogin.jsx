@@ -48,7 +48,7 @@ function ModalLogin(props) {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Login</Modal.Title>
+                    <Modal.Title>Đăng nhập</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -62,9 +62,9 @@ function ModalLogin(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Close
+                        Thoát
                     </Button>
-                    <Button onClick={handleBtnLogin}>Login</Button>
+                    <Button onClick={handleBtnLogin}>Đăng nhập</Button>
                 </Modal.Footer>
             </Modal>
         </div>

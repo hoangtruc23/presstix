@@ -4,17 +4,20 @@ import dayjs from 'dayjs';
 import TicketTable from '../../components/Tables/TicketTable';
 import { getEventDetail } from '../../services/apiService'
 import CarouselItems from '../../components/Carousel/CarouselItems';
+import OrganizerCard from '../../components/Organizer/OrganizerCard';
 
 
 function EventDetail() {
   const slug = useParams();
   const [eventDetail, setEventDetail] = useState();
   const [ticketType, setTicketType] = useState([]);
-
+  const [organizer, setOrganizer] = useState();
   const fetchEventDetail = async () => {
     const res = await getEventDetail(slug.id);
+   
     setEventDetail(res.data.data);
     setTicketType(res.data.data.ticket_type);
+    setOrganizer(res.data.organizer);
   }
   useEffect(() => {
     fetchEventDetail();
@@ -55,14 +58,18 @@ function EventDetail() {
               />
             </div>
           </div>
-
         </div>
+
         <div className='w-[40%]'>
           <div className='booking-event border-6 min-h-[200px]'>
             <TicketTable ticketType={ticketType} />
           </div>
         </div>
+      </div>
 
+      <div className='container'>
+        <h2>Ban tổ chức</h2>
+        <OrganizerCard organizer={organizer} />
       </div>
       <div className='container'>
         <h2>Có thể bạn cũng thích</h2>

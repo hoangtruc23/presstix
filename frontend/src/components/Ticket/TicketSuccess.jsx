@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import dayjs from "dayjs";
-import { postTicketSuccess } from "../../services/apiService"
+import { postTicketCancelled, postTicketSuccess } from "../../services/apiService"
 
 
 function TicketSuccess() {
@@ -18,10 +18,14 @@ function TicketSuccess() {
     const handleClickCancelTicket = (ticket) => {
         setTicketSelected(ticket);
     }
-    console.log({ticketSelected})
+
+    const handleBtnSubmitCancelTicket = async () => {
+        await postTicketCancelled(ticketSelected.id);
+        fetchTicketBuySucces();
+    }
+
     return (
         <>
-
             <div className="p-6 bg-gray-50 rounded-lg shadow-md">
                 {ticketList && ticketList.length > 0 ? (
                     <div className="space-y-4">
@@ -45,23 +49,34 @@ function TicketSuccess() {
                                                     : "bg-yellow-100 text-yellow-700"
                                             }`}
                                     >
-                                        {ticket.status}
+                                        {ticket.status === "expired" ? 'Hết Hạn' : 'Chưa sử dụng'}
                                     </span>
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                    <div className='d-flex gap-2 items-center'>
-                                        <p className="text-sm text-gray-500">Ngày mua:</p>
-                                        <p className="text-md font-medium text-gray-700">{dayjs(ticket.created_at).format("DD/MM/YYYY")}</p>
-                                    </div>
-                                    <div className='d-flex gap-2 items-center'>
-                                        <p className="text-sm text-gray-500">Giá vé:</p>
-                                        <p className="text-md font-bold">{ticket.price} VND</p>
+                                <div className="d-flex justify-between">
+                                    <div className="d-flex gap-5">
+                                        <div className='d-flex gap-2 items-center'>
+                                            <p className="text-sm text-gray-500">Ngày mua:</p>
+                                            <p className="text-md font-medium text-gray-700">{dayjs(ticket.created_at).format("DD/MM/YYYY")}</p>
+                                        </div>
+                                        <div className='d-flex gap-2 items-center'>
+                                            <p className="text-sm text-gray-500">Giá vé:</p>
+                                            <p className="text-md font-bold">{ticket.price} VND</p>
+                                        </div>
+
+                                        <div className='d-flex gap-2 items-center'>
+                                            <p className="text-sm text-gray-500">Số lượng:</p>
+                                            <p className="text-md font-bold">2</p>
+                                        </div>
                                     </div>
 
-                                    <button type="button" className='btn bg-danger text-white' data-toggle="modal" data-target="#modalCancelTicket" onClick={()=>handleClickCancelTicket(ticket)}>
-                                        Huỷ vé
-                                    </button>
+                                    {ticket?.status != 'expired' &&
+                                        <button type="button" className='btn bg-danger text-white' data-toggle="modal" data-target="#modalCancelTicket" onClick={() => handleClickCancelTicket(ticket)}>
+                                            Huỷ vé
+                                        </button>
+                                    }
+
+
                                 </div>
                             </div>
 
@@ -70,8 +85,8 @@ function TicketSuccess() {
                 ) : (
                     <p className="text-center text-gray-500">Bạn chưa mua vé nào</p>
                 )}
-            </div>
-            <div className="modal fade" id="modalCancelTicket" role="dialog"  aria-hidden="true">
+            </div >
+            <div className="modal fade" id="modalCancelTicket" role="dialog" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -81,8 +96,8 @@ function TicketSuccess() {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <h4 className='m-0'>Tên sự kiện: {ticketSelected?.event.name }   </h4>
-                            <h4>Hạng vé: {ticketSelected?.name }  </h4>
+                            <h4 className='m-0'>Tên sự kiện: {ticketSelected?.event.name}   </h4>
+                            <h4>Hạng vé: {ticketSelected?.name}  </h4>
                             <h4>Ngày : {dayjs(ticketSelected?.created_at).format("DD/MM/YYYY")} </h4>
                             <h4>Giá vé: {ticketSelected?.price} </h4>
                             <h4>Số lượng:  </h4>
@@ -93,7 +108,7 @@ function TicketSuccess() {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-danger">Xác nhận</button>
+                            <button type="button" className="btn btn-danger" onClick={handleBtnSubmitCancelTicket}>Xác nhận</button>
                         </div>
                     </div>
                 </div>

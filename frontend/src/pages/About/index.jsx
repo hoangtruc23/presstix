@@ -19,11 +19,11 @@ function About() {
   return (
     <div className="container my-36 px-4">
       <div className="text-center mb-16">
-        <h1 className="text-4xl font-bold mb-4 text-blue-500">About Us</h1>
-        <h2 className="text-2xl font-medium text-gray-700 mb-6">Hi, We're PressTix.</h2>
-        <p className="text-lg text-gray-600 leading-relaxed mx-auto max-w-2xl">
-          Sometimes simple works best. Like Wild One—a brand dedicated to making pet products—which offers a clear and straightforward
-          approach to what it does, who it does it for, and what problem it solves.
+        <h1 className="text-4xl font-bold mb-4 text-blue-500">Giới thiệu</h1>
+        <h2 className="text-2xl font-medium text-gray-700 mb-6">Hi, Chúng tôi là PressTix.</h2>
+        <p className="text-lg text-gray-600 leading-relaxed mx-auto ">
+          PressTix hy vọng mang đến cho mọi người một website thân thiện, có thể mua vé dễ dàng và tiện lợi. <br />
+          Đồng thời cũng giúp các ban tổ chức nhỏ lẻ có thể quản lý sự kiện của mình dễ dàng và linh hoạt hơn
         </p>
       </div>
 
@@ -31,9 +31,9 @@ function About() {
         {members.map((member, index) => (
           <div key={index} className="member-card relative group">
             <div className="overflow-hidden rounded-xl shadow-lg transition-transform duration-300 transform group-hover:scale-105">
-              <img 
-                src={img1} 
-                alt={member.name} 
+              <img
+                src={img1}
+                alt={member.name}
                 className="w-full h-[250px] object-cover rounded-xl"
               />
             </div>

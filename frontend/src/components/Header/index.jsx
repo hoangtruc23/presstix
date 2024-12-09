@@ -4,24 +4,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ModalLogin from "../Modals/ModalLogin";
 import { logoutSuccess } from "../../redux/authReducer";
+import ModalSignUp from "../Modals/ModalSignUp";
 
 function Header() {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const account = useSelector((state) => state.auth.account);
     const dispatch = useDispatch();
 
-    const [show, setShow] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
+    const [showSignUp, setShowSignUp] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const navItems = [
-        { path: "/", title: "Home" },
-        { path: "/events", title: "Events" },
-        { path: "/about", title: "About" },
-        { path: "/contact", title: "Contact" },
+        { path: "/", title: "Trang chủ" },
+        { path: "/events", title: "Sự kiện" },
+        { path: "/about", title: "Giới thiệu" },
+        { path: "/contact", title: "Liên hệ" },
     ];
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleCloseLogin = () => setShowLogin(false);
+    const handleShowLogin = () => setShowLogin(true);
+    
+    const handleShowSigUp = () => setShowSignUp(true);
+    const handleCloseSignUp = () => setShowSignUp(false);
 
     const handleLogout = () => {
         if (dispatch(logoutSuccess())) {
@@ -70,7 +75,7 @@ function Header() {
                                                     to="/admin"
                                                     className="block px-4 py-2 hover:bg-gray-100"
                                                 >
-                                                    Admin
+                                                    Quản trị viên
                                                 </Link>
                                             )}
                                             <li>
@@ -78,15 +83,15 @@ function Header() {
                                                     to="/profile"
                                                     className="block px-4 py-2 hover:bg-gray-100"
                                                 >
-                                                    Profile
+                                                    Thông tin cá nhân
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link
-                                                    to="/event-list"
+                                                    to="/organizer"
                                                     className="block px-4 py-2 hover:bg-gray-100"
                                                 >
-                                                    My Organizer
+                                                    Thông tin ban tổ chức
                                                 </Link>
                                             </li>
                                             <li>
@@ -94,7 +99,7 @@ function Header() {
                                                     onClick={handleLogout}
                                                     className="block px-4 py-2 text-left w-full hover:bg-gray-100"
                                                 >
-                                                    Logout
+                                                    Đăng xuất
                                                 </button>
                                             </li>
                                         </ul>
@@ -105,20 +110,24 @@ function Header() {
                     ) : (
                         <>
                             <button
-                                onClick={handleShow}
+                                onClick={handleShowLogin}
                                 className="px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-500 hover:text-white transition"
                             >
-                                Login
+                                Đăng nhập
                             </button>
-                            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                                Sign Up
+
+                            <button onClick={handleShowSigUp}
+                                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Đăng ký
                             </button>
+
                         </>
                     )}
                 </div>
             </div>
 
-            <ModalLogin show={show} handleShow={handleShow} handleClose={handleClose} />
+            <ModalSignUp show={showSignUp} handleShow={handleShowSigUp} handleClose={handleCloseSignUp}/>
+            <ModalLogin show={showLogin} handleShow={handleShowLogin} handleClose={handleCloseLogin} />
         </header >
     );
 }

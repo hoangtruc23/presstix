@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types'
 import { Table, Button } from 'react-bootstrap';
-import ModalRemoveUser from '../Modals/ModalRemoveUser';
 
 function ManageUserTable(props) {
     const { userList } = props;
-
+    
     const handleChangeStatus = () => {
-        
+    
     }
 
     const handleModalRemove = () => {
@@ -45,7 +44,6 @@ function ManageUserTable(props) {
                 ))}
             </tbody>
 
-            {/* <ModalRemoveUser show={showRemove} setShow={setShowRemove} user={eventSelected} handleDeleteUser={handleDeleteEvent} /> */}
         </Table>
     )
 }

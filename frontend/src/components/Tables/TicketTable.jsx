@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
 import ModalBooking from '../../components/Modals/ModalBooking';
 import './table.scss'
+import { formatPrice } from '../../assets/js/main.js';
 
 
 const validationSchema = Yup.array().of(
@@ -51,21 +52,19 @@ function TicketTable(props) {
             setDisabled(true);
             return;
         }
-
-
     
         setDisabled(false);
-        const price = ticket.price * quantity;
+      
         setCart((prev) => {
             const existingTicket = prev.find((item) => item.name === ticket.name);
             if (existingTicket) {
                 return prev.map((item) =>
                     item.name === ticket.name
-                        ? { ...item, quantity: quantity, price }
+                        ? { ...item, quantity: quantity }
                         : item
                 );
             } else {
-                return [...prev, { ...ticket, quantity: quantity, price }];
+                return [...prev, { ...ticket, quantity: quantity }];
             }
         });
     };
@@ -74,7 +73,6 @@ function TicketTable(props) {
         const total = cart.reduce((acc, current) => acc + current.price, 0);
         setTotalPrice(total);
     }
-    console.log({cart});
 
     useEffect(() => {
         calculatorPrice();
@@ -91,7 +89,7 @@ function TicketTable(props) {
                 {ticketType.map((ticket, index) => (
                     <tr key={index}>
                         <td className="align-middle w-[40%] text-xl">{ticket.name}</td>
-                        <td className="align-middle w-[40%] text-xl">{ticket.price}</td>
+                        <td className="align-middle w-[40%] text-xl">{formatPrice(ticket.price)}</td>
                         <td className='w-[30%] text-center'>
                             {ticket.quantity === ticket.quantity_sold ?
                                 <h3>Sold out</h3>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Modal, Form, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
@@ -18,15 +19,16 @@ const validationSchema = Yup.object({
 
 
 function ModalBooking(props) {
+    const account = useSelector(state => state.auth);
     const { show, handleClose, totalPrice, cart, isPolling, setIsPolling } = props;
     const randomNum = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
     const [showModalQR, setShowModalQR] = useState(false);
     const [content] = useState(`InvoicesTicket${randomNum}`);
     const [fileQR, setFileQR] = useState(null);
     const [formValues, setFormValues] = useState({
-        email: '',
-        fullName: '',
-        phone: '',
+        email: account.account.email || '',
+        fullName: account.account.name || '',
+        phone: account.account.phone || '',
         discountCode: '',
         agreePolicy: false,
     });
@@ -60,22 +62,14 @@ function ModalBooking(props) {
         if (invoiceID) {
             try {
                 for (const item of cart) {
+                   
                     await postTicket({
                         name: item.name,
                         price: item.price,
+                        quantity: item.quantity,
                         event_id: item.event_id,
                         invoice_id: invoiceID,
-                        quantity: item.quantity,
                     });
-                    // for (let i = 0; i < Number(item.quantity); i++) {
-                    //     await postTicket({
-                    //         name: item.name,
-                    //         price: item.price,
-                    //         event_id: item.event_id,
-                    //         invoice_id: invoiceID,
-                    //         quantity: 1,
-                    //     });
-                    // }
                 }
             } catch (error) {
                 console.error("Lỗi khi thêm ticket:" + error);

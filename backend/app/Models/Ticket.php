@@ -13,8 +13,8 @@ class Ticket extends Model
         'id',
         'name',
         'price',
+        'quantity',
         'image',
-
     ];
 
     public function invoice()

@@ -44,6 +44,12 @@ const axiosCassoClient = axios.create({
 // Thêm interceptor cho axiosCassoClient nếu cần xử lý trước khi gửi yêu cầu
 axiosCassoClient.interceptors.request.use((config) => config, (error) => Promise.reject(error));
 
+
+const getLocationVN = () => {
+    return axios.get('https://open.oapi.vn/location/provinces?page=0&size=30&query=');
+};
+
+
 // Xuất các instances để dùng trong ứng dụng
-export { baseAPI, axiosCassoClient };
+export { baseAPI, axiosCassoClient, getLocationVN };
 export default baseAPI;

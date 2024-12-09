@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
+import { formatPrice } from '../../assets/js/main.js';
 
 function EventCard(props) {
     const { event } = props;
@@ -28,7 +29,7 @@ function EventCard(props) {
                     </div>
                         
                 </div>
-                <p className="m-0 text-lg">Giá từ: {event?.ticket_type[0].price}</p>
+                <p className="m-0 text-lg">Giá từ: {formatPrice(event?.ticket_type[0].price)}</p>
             </div>
         </div>
     );

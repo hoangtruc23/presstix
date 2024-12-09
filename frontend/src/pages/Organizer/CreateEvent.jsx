@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import CreateTicketType from "../../components/Ticket/CreateTicketType";
-import { createNewEvent, getEventCate } from "../../services/apiService";
 import { toast } from 'react-toastify';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo } from 'ckeditor5';
+import CreateTicketType from "../../components/Ticket/CreateTicketType";
+import { createNewEvent, getEventCate } from "../../services/apiService";
+import { getLocationVN } from "../../utils/axiosInstance";
 import 'ckeditor5/ckeditor5.css';
 
 function CreateEvent() {
@@ -11,10 +12,12 @@ function CreateEvent() {
   const [listTicketType, setListTicketType] = useState([]);
   const [imageLogo, setImageLogo] = useState(null);
   const [imageBia, setImageBia] = useState(null);
+  const [locationList, setLocationList] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     user_id: 1,
     address: '',
+    location: '',
     description: '',
     policy: '',
     time_start: '',
@@ -31,17 +34,29 @@ function CreateEvent() {
     setEventCate(res.data.data);
   };
 
+  const fetchDataLocationVN = async () => {
+    const res = await getLocationVN();
+    setLocationList(res.data.data)
+  };
+
   useEffect(() => {
     fetchDataEventCate();
+    fetchDataLocationVN();
+
   }, []);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === 'event_cate_id') {
       const selectedEvent = eventCate.find(event => event.name === value);
       setFormData(prev => ({ ...prev, [name]: selectedEvent ? selectedEvent.id : '' }));
-    } else {
+    }
+    // else if (name === 'location') {
+    //   const address = 
+    //   setFormData(prev => ({ ...prev, [name]: value }));
+    // }
+    else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
@@ -116,7 +131,6 @@ function CreateEvent() {
       <h1>Tạo sự kiện</h1>
       <form onSubmit={handleSubmitCreateEvent}>
         <h2>Thông tin sự kiện</h2>
-
         <div className="d-flex form-group">
           <div className="w-1/3 form-control rounded-xl min-h-80 h-auto">
             <label htmlFor="logo-upload">Logo </label>
@@ -154,9 +168,32 @@ function CreateEvent() {
             ))}
           </datalist>
         </div>
-        <div className="form-group">
-          <label>Địa điểm: </label>
-          <input type="text" className="form-control rounded-xl" name='address' onChange={handleChange} />
+        <div className="form-group d-flex items-end gap-2">
+          <div className="w-2/3">
+            <label>Địa điểm: </label>
+            <input type="text" className="form-control rounded-xl" name='address' onChange={handleChange} />
+          </div>
+
+          <div className="w-1/3">
+            <label htmlFor="locationList" className="form-label">Tỉnh/ Thành phố: </label>
+            <input
+              className="form-control"
+              list="datalistLocation"
+              id="locationList"
+              placeholder="Type to search..."
+              name="location"
+              value={formData.location || ""} // Liên kết giá trị với formData.location
+              onChange={handleChange}
+            />
+            <datalist id="datalistLocation">
+              {locationList &&
+                locationList.map((location, index) => (
+                  <option key={index} value={location.name}>
+                    {location.name}
+                  </option>
+                ))}
+            </datalist>
+          </div>
         </div>
 
         <div className="form-group">

@@ -16,6 +16,9 @@ import Footer from "../components/Footer/index.jsx";
 import Profile from "../pages/Profile/index.jsx";
 import CreateEvent from "../pages/Organizer/CreateEvent.jsx";
 import EventListByUser from "../pages/Organizer/EventListByUser.jsx";
+import InfoOrganizer from "../pages/Organizer/InfoOrganizer.jsx";
+import ManageWithdraw from "../pages/Admin/ManageWithdraw/ManageWithdraw.jsx";
+import ManageStatistics from "../pages/Admin/ManageStatistics/ManageStatistics.jsx";
 
 
 const CustomerLayout = () => (
@@ -23,7 +26,7 @@ const CustomerLayout = () => (
         <Header />
         <Outlet />
         <Footer />
-        
+
     </>
 )
 
@@ -61,8 +64,13 @@ const router = createBrowserRouter([
                 ],
             },
             {
+
                 element: <Organizer />,
                 children: [
+                    {
+                        path: 'organizer',
+                        element: <InfoOrganizer />
+                    },
                     {
                         path: 'event-list',
                         element: <EventListByUser />
@@ -71,7 +79,8 @@ const router = createBrowserRouter([
                         path: 'create-event',
                         element: <CreateEvent />
                     },
-                  
+                    
+
                 ],
             },
             {
@@ -82,17 +91,27 @@ const router = createBrowserRouter([
                     </PermissionRoute>,
                 children: [
                     {
-                        path: "manager-user",
+                        path: "manage-user",
                         element: <ManageUser />
                     },
                     {
-                        path: "manager-event",
+                        path: "manage-event",
                         element: <ManageEvent />
                     },
+                    {
+                        path: "manage-withdraw",
+                        element: <ManageWithdraw />
+                    },
+                    {
+                        path: "manage-statistics",
+                        element: <ManageStatistics />
+                    },
+
+                    
 
                 ],
             },
-            
+
 
         ],
     }

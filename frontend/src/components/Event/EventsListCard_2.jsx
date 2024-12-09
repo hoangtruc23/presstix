@@ -12,7 +12,7 @@ function EventsListCard_2(props) {
         <div className='d-flex gap-10 flex-wrap'>
             {events != null}{
                 events.map((event, index) => (
-                    <Link to={`/event-detail/${event?.slug}`} key={index} className='w-[23%]' >
+                    <Link to={`/event-detail/${event?.slug}`} key={index} className='w-[22%]' >
                         <EventCard event={event}  />
                     </Link>
 

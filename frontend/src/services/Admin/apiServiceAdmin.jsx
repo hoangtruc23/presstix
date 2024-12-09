@@ -12,4 +12,15 @@ const deleteEvent = (id) => {
     return baseAPIAdmin.delete(`/events/${id}`);
 }
 
-export { getUserList,getEventList,deleteEvent }
+const getWithdrawal = () => {
+    return baseAPIAdmin.post('/withdrawal');
+}
+
+const getTicketStatistics = (orderBy) => {
+    return baseAPIAdmin.post('/ticket-statistics', { orderBy });
+}
+
+
+
+
+export { getUserList, getEventList, deleteEvent, getWithdrawal, getTicketStatistics }

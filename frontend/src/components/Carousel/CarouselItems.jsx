@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import cateimg from '../../assets/img/cate.png'
 import { getEventCate } from '../../services/apiService';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';

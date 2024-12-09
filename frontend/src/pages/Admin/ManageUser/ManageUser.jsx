@@ -4,7 +4,7 @@ import ManageUserTable from '../../../components/Tables/ManageUserTable';
 
 
 function ManageUser() {
-    const [userList, setUserList] = useState();
+    const [userList, setUserList] = useState([]);
 
     const handleUserList = async () => {
         const res = await getUserList();

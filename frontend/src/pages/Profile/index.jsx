@@ -4,16 +4,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { putUpdateProfile } from '../../services/apiService';
 import { updateUser } from '../../redux/authReducer';
-import InvoicesByUser from '../../components/Ticket/InvoicesByUser';
+// import InvoicesByUser from '../../components/Ticket/InvoicesByUser';
 import TicketSuccess from '../../components/Ticket/TicketSuccess';
-
+import AvatarDefault from '../../assets/img/avatar_default.png';
+import TicketCancelled from '../../components/Ticket/TicketCancelled';
 function Profile() {
     const dispatch = useDispatch();
     const account = useSelector(state => state.auth);
-    const [email, setEmail] = useState();
-    const [name, setName] = useState();
-    const [phone, setPhone] = useState();
-    const [avatar, setAvatar] = useState(null);
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [avatar, setAvatar] = useState(AvatarDefault);
 
     useEffect(() => {
         setEmail(account.account.email)
@@ -85,7 +86,7 @@ function Profile() {
                     <li className="nav-item">
                         <a className="nav-link" id="profile-tab" data-toggle="tab" href="#TicketCancelled" role="tab" aria-controls="profile" aria-selected="false">Vé đã huỷ</a>
                     </li>
-                  
+
 
                 </ul>
                 <div className="tab-content" id="myTabContent">
@@ -93,7 +94,7 @@ function Profile() {
                         <TicketSuccess />
                     </div>
                     <div className="tab-pane fade" id="TicketCancelled" role="tabpanel" aria-labelledby="profile-tab">
-                        
+                        <TicketCancelled />
                     </div>
                     {/* <div className="tab-pane fade" id="TransactionHistory" role="tabpanel" aria-labelledby="profile-tab">
                         <InvoicesByUser />

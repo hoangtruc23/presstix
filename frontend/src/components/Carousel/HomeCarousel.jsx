@@ -8,8 +8,7 @@ import banner3 from '../../assets/img/banner-3.png'
 
 function HomeCarousel() {
   // const [listCates, setListCates] = useState([]);
-
-
+  
   return (
     <Swiper
       slidesPerView={1}
