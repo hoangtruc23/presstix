@@ -45,17 +45,12 @@ function CreateEvent() {
 
   }, []);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'event_cate_id') {
       const selectedEvent = eventCate.find(event => event.name === value);
       setFormData(prev => ({ ...prev, [name]: selectedEvent ? selectedEvent.id : '' }));
     }
-    // else if (name === 'location') {
-    //   const address = 
-    //   setFormData(prev => ({ ...prev, [name]: value }));
-    // }
     else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
@@ -97,6 +92,7 @@ function CreateEvent() {
     payload.append('name', formData.name);
     payload.append('user_id', formData.user_id);
     payload.append('address', formData.address);
+    payload.append('location', formData.location);
     payload.append('description', formData.description);
     payload.append('policy', formData.policy);
     payload.append('time_start', formData.time_start);
@@ -116,6 +112,7 @@ function CreateEvent() {
       payload.append(`images[${index}]`, image);
     });
 
+   
     try {
       const res = await createNewEvent(payload);
       if (res.data.success) {
@@ -182,7 +179,7 @@ function CreateEvent() {
               id="locationList"
               placeholder="Type to search..."
               name="location"
-              value={formData.location || ""} // Liên kết giá trị với formData.location
+              value={formData.location || ""}
               onChange={handleChange}
             />
             <datalist id="datalistLocation">

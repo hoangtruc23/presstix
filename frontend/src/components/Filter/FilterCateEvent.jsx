@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 function FilterCateEvent(props) {
     const { eventCate, setEventCate } = props;
     const [cateList, setCateList] = useState([]);
+    
     const fetchCateEvent = async () => {
         const res = await getEventCate();
         setCateList(res.data.data);
@@ -29,7 +30,7 @@ function FilterCateEvent(props) {
                 onChange={handleChange}
                 label="Loại sự kiện"
             >
-                <MenuItem value="">All</MenuItem>
+                <MenuItem value="">Tất cả</MenuItem>
                 {cateList && cateList.map((cate, index) => (
                     <MenuItem key={index} value={cate.id}>{cate.name}</MenuItem>
                 ))}

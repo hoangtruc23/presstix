@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import ModalLogin from "../Modals/ModalLogin";
 import { logoutSuccess } from "../../redux/authReducer";
 import ModalSignUp from "../Modals/ModalSignUp";
-
+import Logo from '../../assets/img/logo.png'
 function Header() {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const account = useSelector((state) => state.auth.account);
@@ -38,10 +38,11 @@ function Header() {
         <header className="bg-white shadow-md sticky top-0 z-50">
             <div className="container mx-auto flex justify-between items-center py-4 px-6">
                 <Link to="/" className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    {/* <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
                         P
                     </div>
-                    <h1 className="text-2xl font-semibold text-blue-600">PressTix</h1>
+                    <h1 className="text-2xl font-semibold text-blue-600">PressTix</h1> */}
+                    <img className='w-[200px]' src={Logo} alt="" />
                 </Link>
 
                 <nav className="hidden md:flex gap-8">

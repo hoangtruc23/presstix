@@ -36,36 +36,34 @@ class OrganizerController extends Controller
             foreach ($organizer->user->events as $event) {
                 foreach ($event->ticket_type as $ticket) {
                     $totalWallet += $ticket->price * $ticket->quantity_sold;
-                   
                 }
             }
-                $organizer->update(['wallet' => $totalWallet]);
+            $organizer->update(['wallet' => $totalWallet]);
         }
 
-      
-
-
-        return response()->json(['message' => 'Wallet updated successfully!']);
+        return response()->json([
+            'message' => 'Cập nhật ví thành công!'
+        ]);
     }
 
     public function updateInfoBanking(Request $request)
     {
-        $user_id = Auth::id(); 
+        $user_id = Auth::id();
         $organizer = Organizer::where('user_id', $user_id)->first();
-    
+
         if ($organizer) {
             $organizer->bank = $request->bank;
             $organizer->account_name = $request->account_name;
             $organizer->account_number = $request->account_number;
-    
+
             $organizer->save();
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Cập nhật thông tin thành công!'
             ]);
         }
-    
+
         return response()->json([
             'success' => false,
             'message' => 'Không tìm thấy thông tin tổ chức!'
@@ -93,7 +91,7 @@ class OrganizerController extends Controller
             $organizer->name = $request->name;
             $organizer->description = $request->description;
             $organizer->image_url  = $request->image_url;
-            
+
             if ($request->hasFile('image_url')) {
                 $organizer->image_url = $request->file('image_url')->store('images', 'public');
             }

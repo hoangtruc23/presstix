@@ -14,6 +14,12 @@ class EventCategoryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        // return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+           'image' => $this->image ? asset('storage/eventcate/'.$this->image) : null,
+        ];
     }
 }

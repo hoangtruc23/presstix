@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EventCategory extends Model
+class Location extends Model
 {
     use HasFactory;
-
-    protected $table = 'event_categories';
 
     protected $fillable = [
         'id',

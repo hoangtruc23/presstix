@@ -5,7 +5,7 @@ import NavbarOriganizer from "../../components/Navbar/NavbarOrganizer"
 function Organizer() {
     return (
         <div className="d-flex ">
-            <div className="w-[300px]">
+            <div className="w-[320px]">
                 <NavbarOriganizer />
             </div>
             <div className="w-[75%]">

@@ -14,6 +14,7 @@ use App\Models\Image;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\OrganizerResource;
 use App\Models\EventImage;
+use App\Models\Location;
 use App\Models\Organizer;
 use App\Models\TicketType;
 use Carbon\Carbon;
@@ -50,7 +51,6 @@ class EventController extends Controller
         }
 
         $events = $query->with('images')
-            ->where('status', 'active')
             ->orderBy('updated_at', 'desc')
             ->get();
 
@@ -72,6 +72,7 @@ class EventController extends Controller
                 'name' => 'required|string|max:255',
                 'user_id' => 'required|integer',
                 'address' => 'required|string|max:255',
+                'location' => 'string|max:255',
                 'time_start' => 'required|date',
                 'time_end' => 'required|date|after:time_start',
                 'policy' => 'required|string',
@@ -97,6 +98,13 @@ class EventController extends Controller
                     'quantity' => $ticketType['quantity'],
                     'status' => true,
                     'event_id' => $event->id,
+                ]);
+            }
+
+            if ($request['location']) {
+                Location::create([
+                    'name' => $request['location'],
+                    'slug' => Str::slug($request['location'], '-')
                 ]);
             }
 

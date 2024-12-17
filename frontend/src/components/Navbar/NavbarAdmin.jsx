@@ -12,7 +12,7 @@ function NavbarAdmin() {
 
     ]
     return (
-        <nav className="bg-[#77a9ff] w-[300px ] fixed top-0 left-0 h-screen px-6 py-8 text-white shadow-lg z-50 transition-all ease-in-out duration-300">
+        <nav className="bg-[#77a9ff] w-[270px] fixed top-0 left-0 h-screen px-6 py-8 text-white shadow-lg z-50 transition-all ease-in-out duration-300">
             <div className="flex flex-col space-y-8">
                 <Link to='/admin' className=" text-2xl font-semibold tracking-wide text-white hover:text-gray-200 transition duration-300">
                     <h3 className='m-0'>Quản trị viên</h3>

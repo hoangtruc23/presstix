@@ -14,7 +14,7 @@ function EventDetail() {
   const [organizer, setOrganizer] = useState();
   const fetchEventDetail = async () => {
     const res = await getEventDetail(slug.id);
-   
+
     setEventDetail(res.data.data);
     setTicketType(res.data.data.ticket_type);
     setOrganizer(res.data.organizer);
@@ -62,7 +62,9 @@ function EventDetail() {
 
         <div className='w-[40%]'>
           <div className='booking-event border-6 min-h-[200px]'>
-            <TicketTable ticketType={ticketType} />
+            {eventDetail?.status == "expired" ?
+              <button className='btn bg-danger text-white w-[80%] mt-20'> Sự kiện đã kết thúc </button>
+              : <TicketTable ticketType={ticketType} />}
           </div>
         </div>
       </div>

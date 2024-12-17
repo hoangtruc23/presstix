@@ -9,7 +9,7 @@ function NavbarOriganizer() {
     ];
 
     return (
-        <nav id="sidebar" className="fixed bg-[#77a9ff] text-white w-[280px] h-full p-4 transition-all duration-300 ease-in-out shadow-lg z-50">
+        <nav id="sidebar" className="fixed w-[300px] bg-[#77a9ff] text-white h-full p-4 transition-all duration-300 ease-in-out shadow-lg z-50">
             <div className="flex flex-col space-y-8">
                 <Link to="/event-list" className="text-2xl font-semibold text-white hover:text-gray-200 transition duration-300">
                     <h3 className="m-0">Ban tổ chức</h3>

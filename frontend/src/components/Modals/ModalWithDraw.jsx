@@ -11,7 +11,6 @@ function ModalWithDraw(props) {
     const handleSubmitWithdraw = async () => {
         await postInfoBankingOrganizer(bank, account_number, account_name);
         const res = await getWithdrawal();
-
         toast.success(res.data.message);
         handleClose();
     }
