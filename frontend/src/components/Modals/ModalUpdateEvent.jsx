@@ -62,11 +62,11 @@ function ModalUpdateEvent({ show, setShow, event }) {
       reader.onloadend = () => {
         setFormData((prevData) => ({
           ...prevData,
-          images: [...(prevData.images || []), file], // Lưu file gốc
-          previews: [...(prevData.previews || []), reader.result], // Lưu Base64 để xem trước
+          images: [...(prevData.images || []), file],
+          previews: [...(prevData.previews || []), reader.result],
         }));
       };
-      reader.readAsDataURL(file); // Đọc file dưới dạng URL
+      reader.readAsDataURL(file); 
     }
   };
   const handleAddTicketType = () => {

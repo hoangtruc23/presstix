@@ -27,19 +27,17 @@ function CarouselItems() {
             key={listCates.length}
             slidesPerView={5}
             spaceBetween={20}
-            // loop={true}
             navigation={true}
             modules={[Pagination, Navigation]}
             className="mySwiper"
         >
             {listCates && listCates.length > 0 && listCates.map((cate,index) => (
                 <SwiperSlide key={index} >
-                    <Link to='events' state={{ cate }}>
+                    <Link to='/events' state={{ cate }}>
                         <div className="relative duration-500 hover:scale-105 group">
                             <img
                                 alt="image"
                                 src={cate?.image || TPHCM}
-                                // src={TPHCM}
                                 className="w-full h-[200px] object-cover rounded-lg mb-4 transition-all ease-in-out group-hover:opacity-80"
                             />
                             <div className="absolute bottom-0 left-0 w-full p-4">

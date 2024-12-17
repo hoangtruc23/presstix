@@ -45,7 +45,7 @@ const searchEvents = (search = '', event_cate = '') => {
             event_cate,
             page: 1,
         },
-       
+
     });
 }
 
@@ -100,6 +100,11 @@ const getWithdrawal = () => {
 
 
 const createNewEvent = (payload) => {
+
+    // payload.forEach((item) => {
+    //     console.log({ item })
+    // });
+
     return baseAPI.post('create-event', payload, {
         headers: {
             'Content-Type': 'multipart/form-data'

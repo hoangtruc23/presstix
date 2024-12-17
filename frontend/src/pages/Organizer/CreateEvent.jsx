@@ -107,12 +107,15 @@ function CreateEvent() {
         payload.append(`ticket_types[${index}][quantity]`, ticketType.quantity);
       }
     });
-
+   
     formData.images.forEach((image, index) => {
       payload.append(`images[${index}]`, image);
     });
 
-   
+    // for (let item of payload.entries()) {
+    //   console.log(item[0], item[1]);
+    // }
+
     try {
       const res = await createNewEvent(payload);
       if (res.data.success) {

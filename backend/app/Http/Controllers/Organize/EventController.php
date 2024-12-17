@@ -39,10 +39,8 @@ class EventController extends Controller
 
             $data['slug'] = Str::slug($data['name']);
             $data['slot'] = array_sum(array_column($data['ticket_types'], 'quantity'));
-            $data['description'] = 'kjadhajkshd';
-           
+            $data['description'] = $request->description;
 
-            // Tạo sự kiện mới
             $event = Event::create($data);
 
             foreach ($data['ticket_types'] as $ticketType) {
@@ -55,7 +53,6 @@ class EventController extends Controller
                 ]);
             }
 
-            // Lưu hình ảnh nếu có
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
                     $imagePath = $image->store('events', 'public');

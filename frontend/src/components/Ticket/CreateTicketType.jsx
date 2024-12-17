@@ -14,23 +14,17 @@ function CreateTicketType(props) {
 
     const quantityArray = Array.from({ length: quantity }, (_, i) => i + 1);
 
-    const handleChange = (e) => {
+    const handleChange = (e, index) => {
         const { name, value } = e.target;
-
-        const updatedTicketType = {
-            ...ticketType,
-            [name]: name === "price" ? parseFloat(value) || 0 : name === "quantity" ? parseInt(value) || 1 : value,
-        };
-
-        setTicketType(updatedTicketType);
 
         setListTicketType((prev) => {
             const newList = [...prev];
-            if (newList.length < quantity) {
-                newList.push(updatedTicketType);
-            } else {
-                newList[quantity - 1] = updatedTicketType;
-            }
+            const updatedTicketType = {
+                ...newList[index],
+                [name]: name === "price" ? parseFloat(value) || 0 : name === "quantity" ? parseInt(value) || 1 : value,
+            };
+
+            newList[index] = updatedTicketType;
             return newList;
         });
     };
@@ -57,20 +51,32 @@ function CreateTicketType(props) {
                 <div key={index} className='d-flex gap-5'>
                     <div className="form-group">
                         <label>Loại vé: </label>
-                        <input type="text" className="form-control rounded-xl" onChange={handleChange} name={`name`} />
+                        <input
+                            type="text"
+                            className="form-control rounded-xl"
+                            onChange={(e) => handleChange(e, index)}
+                            name="name"
+                        />
                     </div>
                     <div className="form-group">
                         <label>Giá vé: </label>
-                        <input type="text" className="form-control rounded-xl" onChange={handleChange} name={`price`} />
-
+                        <input
+                            type="text"
+                            className="form-control rounded-xl"
+                            onChange={(e) => handleChange(e, index)}
+                            name="price"
+                        />
                     </div>
                     <div className="form-group">
                         <label>Số lượng: </label>
-                        <input type="number" className="form-control rounded-xl" onChange={handleChange} name={`quantity`} />
+                        <input
+                            type="number"
+                            className="form-control rounded-xl"
+                            onChange={(e) => handleChange(e, index)}
+                            name="quantity"
+                        />
                     </div>
-
                 </div>
-
             ))}
             <button className='btn btn-warning my-2 rounded-full' onClick={(e) => handleAddEventType(e)}>Thêm loại</button>
         </>

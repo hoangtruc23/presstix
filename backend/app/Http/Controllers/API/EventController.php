@@ -189,8 +189,6 @@ class EventController extends Controller
                 'ticket_types.*.name' => 'nullable|string|max:255',
                 'ticket_types.*.price' => 'nullable|integer',
                 'ticket_types.*.quantity' => 'nullable|integer|min:1',
-                'images' => 'nullable|array',
-                'images.*' => 'nullable|image|max:1024',
                 'slot' => 'nullable|integer',
                 'event_cate_id' => 'nullable|integer|exists:event_categories,id',
                 'description' => 'nullable|string',
