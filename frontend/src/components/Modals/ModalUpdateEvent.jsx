@@ -110,16 +110,14 @@ function ModalUpdateEvent({ show, setShow, event }) {
       formDataToSubmit.append('images[]', image);
     });
 
-    formData.images.forEach((image, index) => {
-      console.log(`Image ${index}:`, image);
-    });
-
+    // formData.images.forEach((image, index) => {
+    //   console.log(`Image ${index}:`, image);
+    // });
 
     try {
       const res = await putUpdateEvent(event.id, formDataToSubmit);
       toast.success(res.data.message)
       handleClose();
-      console.log({ res });
     } catch (error) {
       toast.error(error.message)
     }

@@ -16,7 +16,6 @@ const authSlice = createSlice({
     },
     reducers: {
         loginSuccess(state, action) {
-            console.log(action.payload);
             state.account.id = action.payload.user.id;
             state.account.email = action.payload.user.email;
             state.account.name = action.payload.user.name;
@@ -36,7 +35,6 @@ const authSlice = createSlice({
         },
         
         updateUser(state, action) {
-            console.log({state});
             state.account = {
                 ...state.account,
                 ...action.payload,

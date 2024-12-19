@@ -1,10 +1,10 @@
-import { useState } from "react";
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify'
 import { postInfoOrganizerUpdate } from "../../services/apiService"
 
 function OrganizerSetup(props) {
-    const { imageLogo,formData, setFormData } = props;
-  
+    const { imageLogo, setImageLogo, formData, setFormData } = props;
+
     const handleImageLogo = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -32,7 +32,6 @@ function OrganizerSetup(props) {
 
         try {
             const res = await postInfoOrganizerUpdate(formDataToSend);
-            console.log({ res });
             toast.success(res.data.message);
         } catch (error) {
             console.error('Lỗi khi gửi dữ liệu:', error);
@@ -94,5 +93,12 @@ function OrganizerSetup(props) {
         </div>
     )
 }
+
+OrganizerSetup.propTypres = {
+    imageLogo: PropTypes.any.isRequired,
+    setImageLogo: PropTypes.bool.isRequired,
+    formData: PropTypes.any.isRequired,
+    setFormData: PropTypes.func.isRequired,
+};
 
 export default OrganizerSetup

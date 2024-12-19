@@ -25,8 +25,6 @@ function ModalSignUp(props) {
         try {
             const res = await postSignUpWithEmailPass(name, email, password, phone);
 
-            console.log({ res });
-
             if (res.data.success) {
                 toast.success(res.data.message);
                 handleClose();
@@ -84,5 +82,10 @@ function ModalSignUp(props) {
         </div>
     )
 }
+
+ModalSignUp.propTypes = {
+    show: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+};
 
 export default ModalSignUp

@@ -24,8 +24,6 @@ function ManageEventTable(props) {
         setShowRemove(true);
     }
 
-    console.log({eventList})
-
     const handleChangeStatus = async (e, event) => {
         try {
             const selectedStatus = e.target.value;

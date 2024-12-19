@@ -11,7 +11,6 @@ function InvoicesByUser() {
     const fetchDataInvoices = async () => {
         try {
             const res = await getInvoicesByUser();
-            console.log({ res });
             setInvoiceList(res.data.invoices);
         } catch (error) {
             console.error("Error fetching invoices:", error);

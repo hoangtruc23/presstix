@@ -39,7 +39,6 @@ const getEventCate = () => {
 }
 
 const searchEvents = (search = '', event_cate = '', location = '') => {
-    console.log({location})
     return baseAPI.get(`events?search=${search}`, {
         params: {
             search,

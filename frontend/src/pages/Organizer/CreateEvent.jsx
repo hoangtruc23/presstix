@@ -114,9 +114,9 @@ function CreateEvent() {
       payload.append(`images[${index}]`, image);
     });
 
-    for (let item of payload.entries()) {
-      console.log(item[0], item[1]);
-    }
+    // for (let item of payload.entries()) {
+    //   console.log(item[0], item[1]);
+    // }
 
     try {
       const res = await createNewEvent(payload);
@@ -135,13 +135,6 @@ function CreateEvent() {
       <form onSubmit={handleSubmitCreateEvent}>
         <h2>Thông tin sự kiện</h2>
         <div className="d-flex form-group">
-          {/* <div className="w-1/3 form-control rounded-xl min-h-80 h-auto" htmlFor='logo-upload'>
-            <label htmlFor="logo-upload">Logo </label>
-            <input type="file" accept="image/*" onChange={handleImageLogo} style={{ display: 'none' }} id="logo-upload" />
-            {imageLogo && (
-              <img src={imageLogo} alt="Preview" className='rounded-xl object-cover' style={{ width: '720px', height: '400px' }} />
-            )}
-          </div> */}
           <div className="w-1/3 form-control rounded-xl min-h-80 h-auto flex justify-center items-center">
             <label
               htmlFor="logo-upload"

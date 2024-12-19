@@ -5,9 +5,6 @@ const postHandlerBankTransfer = () => {
 }
 
 const postPaymentBooking = (totalPrice, description, email, phone) => {
-
-    console.log("Sending data:", { totalPrice, description, email, phone });
-
     return baseAPI.post('payment', {
         amount: totalPrice,
         description,

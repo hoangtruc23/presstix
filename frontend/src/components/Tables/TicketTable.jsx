@@ -29,8 +29,6 @@ function TicketTable(props) {
         setIsPolling(false);
     }
 
-    console.log({ cart })
-
     const handleShow = async () => {
         try {
             await validationSchema.validate(cart, { abortEarly: false });
