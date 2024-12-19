@@ -122,7 +122,6 @@ class PaymentController extends Controller
 
                         $contentIdentifier = substr($transactionDesc, strrpos($transactionDesc, 'InvoicesTicket'));
 
-                        // Debug: Log contentIdentifier
                         Log::info('description Identifier: ' . $contentIdentifier);
 
                         $invoice = Invoice::where('amount', $transactionAmount)

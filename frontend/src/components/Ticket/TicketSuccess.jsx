@@ -22,6 +22,7 @@ function TicketSuccess() {
     const handleBtnSubmitCancelTicket = async () => {
         await postTicketCancelled(ticketSelected.id);
         fetchTicketBuySucces();
+        window.location.reload();
     }
 
     return (
@@ -66,7 +67,7 @@ function TicketSuccess() {
 
                                         <div className='d-flex gap-2 items-center'>
                                             <p className="text-sm text-gray-500">Số lượng:</p>
-                                            <p className="text-md font-bold">2</p>
+                                            <p className="text-md font-bold">{ticket.quantity}</p>
                                         </div>
                                     </div>
 
@@ -86,6 +87,7 @@ function TicketSuccess() {
                     <p className="text-center text-gray-500">Bạn chưa mua vé nào</p>
                 )}
             </div >
+
             <div className="modal fade" id="modalCancelTicket" role="dialog" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
@@ -108,11 +110,12 @@ function TicketSuccess() {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-danger" onClick={handleBtnSubmitCancelTicket}>Xác nhận</button>
+                            <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={handleBtnSubmitCancelTicket}>Xác nhận</button>
                         </div>
                     </div>
                 </div>
             </div>
+
         </>
     )
 }

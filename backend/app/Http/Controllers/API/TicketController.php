@@ -39,9 +39,12 @@ class TicketController extends Controller
             $ticket_type->save();
         }
 
+       
+
         return response()->json([
             'success' => true,
-            'ticket' => $ticket,
+            // 'ticket' => $ticket,
+            'ticket_type' => $ticket_type
         ]);
     }
 
@@ -61,7 +64,7 @@ class TicketController extends Controller
 
             foreach ($tickets as $ticket) {
                 $timeEnd = Carbon::parse($ticket->event->time_end);
-                if ($timeEnd > Carbon::now()) {
+                if ($timeEnd < Carbon::now()) {
                     $ticket->status = 'expired';
                     $ticket->save();
                 }

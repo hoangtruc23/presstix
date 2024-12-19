@@ -39,15 +39,18 @@ class EventController extends Controller
 
         $search = $request->input('search');
         $event_cate = $request->input('event_cate');
+        $location = $request->input('location');
         $query = Event::query();
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', '%' . $search . '%');
             });
         }
-        
         if ($event_cate) {
             $query->where('event_cate_id', $event_cate);
+        }
+        if($location){
+            $query->where('location_id', $location);
         }
 
         $events = $query->with('images')
@@ -67,7 +70,6 @@ class EventController extends Controller
     public function store(Request $request)
     {
         try {
-
             $data = $request->validate([
                 'name' => 'required|string|max:255',
                 'user_id' => 'required|integer',
@@ -85,6 +87,7 @@ class EventController extends Controller
                 'description' => 'nullable|string',
                 'status' => 'string',
             ]);
+            var_dump($data);
 
             $data['slug'] = Str::slug($data['name']);
             $data['slot'] = array_sum(array_column($data['ticket_types'], 'quantity'));
@@ -102,10 +105,15 @@ class EventController extends Controller
             }
 
             if ($request['location']) {
-                Location::create([
-                    'name' => $request['location'],
-                    'slug' => Str::slug($request['location'], '-')
-                ]);
+                $location = Location::where('name', $request['location'])->first();
+                if (!$location) {
+                    $location =Location::create([
+                        'name' => $request['location'],
+                        'slug' => Str::slug($request['location'], '-')
+                    ]);
+                }
+                $event->location_id = $location->id;
+                $event->save();
             }
 
             if ($request->hasFile('images')) {

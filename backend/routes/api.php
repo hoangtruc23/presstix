@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\EventCategoryController;
 use App\Http\Controllers\API\InvoiceController;
+use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\TicketController;
 use App\Http\Controllers\API\WebhookController;
@@ -42,6 +43,10 @@ Route::get('/organizers/update-wallet', [OrganizerController::class, 'updateWall
 
 // TICKET 
 Route::post('/create-ticket', [TicketController::class, 'store'])->name('create.ticket');
+
+// LOCATION 
+Route::get('/locations', [LocationController::class, 'getLocation']);
+
 
 
 // ADMIN

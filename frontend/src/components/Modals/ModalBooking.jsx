@@ -8,12 +8,13 @@ import { formatPrice } from '../../assets/js/main.js'
 import ModalQRCode from './ModalQRCode.jsx';
 import baseQRBanking from '../../services/qrBanking.jsx'
 import { postHandlerBankTransfer, postPaymentBooking, postTicket } from '../../services/paymentService.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email format').required('Email is required'),
     phone: Yup.string()
-    .matches(/^[0-9]+$/, 'Phone must contain only numbers')
-    .required('Phone is required'),
+        .matches(/^[0-9]+$/, 'Phone must contain only numbers')
+        .required('Phone is required'),
     agreePolicy: Yup.bool().oneOf([true], 'You must agree to the policy').required('Check'),
 });
 
@@ -33,7 +34,7 @@ function ModalBooking(props) {
         agreePolicy: false,
     });
     const [errors, setErrors] = useState({});
-
+    const navigation = useNavigate();
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormValues({
@@ -48,7 +49,7 @@ function ModalBooking(props) {
             setShowModalQR(true);
             getQRBanking();
             setIsPolling(true);
-            await postPaymentBooking(totalPrice, content,formValues.email,formValues.phone);
+            await postPaymentBooking(totalPrice, content, formValues.email, formValues.phone);
         } catch (err) {
             const validationErrors = err.inner.reduce((acc, error) => {
                 acc[error.path] = error.message;
@@ -62,13 +63,12 @@ function ModalBooking(props) {
         if (invoiceID) {
             try {
                 for (const item of cart) {
-                   
                     await postTicket({
                         name: item.name,
                         price: item.price,
-                        quantity: item.quantity,
                         event_id: item.event_id,
                         invoice_id: invoiceID,
+                        quantity: item.quantity,
                     });
                 }
             } catch (error) {
@@ -99,7 +99,11 @@ function ModalBooking(props) {
                     setIsPolling(false);
                     toast.success(res.data.message);
                     handleClose();
-                    window.location.reload();
+                    navigation('/profile');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 0);
+
                 }
             } catch (error) {
                 console.error('Lỗi khi gọi API:', error);
@@ -139,7 +143,7 @@ function ModalBooking(props) {
                             {errors.email}
                         </Form.Control.Feedback>
                     </Form.Group>
-                   
+
                     <Form.Group className="mb-3" controlId="phone">
                         <Form.Label>Số điện thoại</Form.Label>
                         <Form.Control

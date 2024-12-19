@@ -29,6 +29,8 @@ function TicketTable(props) {
         setIsPolling(false);
     }
 
+    console.log({ cart })
+
     const handleShow = async () => {
         try {
             await validationSchema.validate(cart, { abortEarly: false });
@@ -43,7 +45,7 @@ function TicketTable(props) {
         const qty_sold = ticket.quantity_sold;
         const remainingTickets = qty_total - qty_sold;
 
-        if(quantity==''){
+        if (quantity == '') {
             quantity = 0;
             return;
         }
@@ -52,9 +54,9 @@ function TicketTable(props) {
             setDisabled(true);
             return;
         }
-    
+
         setDisabled(false);
-      
+
         setCart((prev) => {
             const existingTicket = prev.find((item) => item.name === ticket.name);
             if (existingTicket) {
@@ -70,8 +72,12 @@ function TicketTable(props) {
     };
 
     const calculatorPrice = () => {
-        const total = cart.reduce((acc, current) => acc + current.price, 0);
+        let total = 0;
+        for (const item of cart) {
+            total += item.price * item.quantity;
+        }
         setTotalPrice(total);
+
     }
 
     useEffect(() => {
@@ -103,7 +109,7 @@ function TicketTable(props) {
                                     }}
                                     onChange={(e) => handleChooseTicket(ticket, e.target.value)} />
                             }
-                           
+
                         </td>
                     </tr>
                 ))}

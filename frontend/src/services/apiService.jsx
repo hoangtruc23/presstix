@@ -38,11 +38,13 @@ const getEventCate = () => {
     return baseAPI.get(`event-cate`);
 }
 
-const searchEvents = (search = '', event_cate = '') => {
+const searchEvents = (search = '', event_cate = '', location = '') => {
+    console.log({location})
     return baseAPI.get(`events?search=${search}`, {
         params: {
             search,
             event_cate,
+            location,
             page: 1,
         },
 
@@ -125,11 +127,16 @@ const postTicketCancelled = (ticket_id) => {
     return baseAPI.post('ticket-cancelled', { ticket_id });
 };
 
+// LOCATIONS 
+const getLocation = () => {
+    return baseAPI.get('locations');
+
+}
 
 
 
 export {
     postSignUpWithEmailPass, postLoginWithEmailPass, getMyProfile, putUpdateProfile, getEventCate, searchEvents, getEventDetail,
     getEventByUser, createNewEvent, putUpdateEventStatus, putUpdateEvent, postInfoOrganizerUpdate, postInfoBankingOrganizer,
-    postTicketSuccess, getTicketCancelled, postTicketCancelled, postInfoOrganizer, getWithdrawal, getUploadWallet
+    postTicketSuccess, getTicketCancelled, postTicketCancelled, postInfoOrganizer, getWithdrawal, getUploadWallet, getLocation
 }

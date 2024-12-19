@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
+import { useSelector } from "react-redux";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo } from 'ckeditor5';
 import CreateTicketType from "../../components/Ticket/CreateTicketType";
@@ -8,6 +9,7 @@ import { getLocationVN } from "../../utils/axiosInstance";
 import 'ckeditor5/ckeditor5.css';
 
 function CreateEvent() {
+  const account = useSelector(state => state.auth);
   const [eventCate, setEventCate] = useState([]);
   const [listTicketType, setListTicketType] = useState([]);
   const [imageLogo, setImageLogo] = useState(null);
@@ -15,7 +17,7 @@ function CreateEvent() {
   const [locationList, setLocationList] = useState('');
   const [formData, setFormData] = useState({
     name: '',
-    user_id: 1,
+    user_id: account.account.id,
     address: '',
     location: '',
     description: '',
@@ -107,19 +109,20 @@ function CreateEvent() {
         payload.append(`ticket_types[${index}][quantity]`, ticketType.quantity);
       }
     });
-   
+
     formData.images.forEach((image, index) => {
       payload.append(`images[${index}]`, image);
     });
 
-    // for (let item of payload.entries()) {
-    //   console.log(item[0], item[1]);
-    // }
+    for (let item of payload.entries()) {
+      console.log(item[0], item[1]);
+    }
 
     try {
       const res = await createNewEvent(payload);
       if (res.data.success) {
         toast.success('Tạo sự kiện thành công');
+        window.location.reload();
       }
     } catch {
       toast.error('Tạo sự kiện thất bại');
@@ -132,16 +135,28 @@ function CreateEvent() {
       <form onSubmit={handleSubmitCreateEvent}>
         <h2>Thông tin sự kiện</h2>
         <div className="d-flex form-group">
-          <div className="w-1/3 form-control rounded-xl min-h-80 h-auto">
+          {/* <div className="w-1/3 form-control rounded-xl min-h-80 h-auto" htmlFor='logo-upload'>
             <label htmlFor="logo-upload">Logo </label>
             <input type="file" accept="image/*" onChange={handleImageLogo} style={{ display: 'none' }} id="logo-upload" />
             {imageLogo && (
               <img src={imageLogo} alt="Preview" className='rounded-xl object-cover' style={{ width: '720px', height: '400px' }} />
             )}
+          </div> */}
+          <div className="w-1/3 form-control rounded-xl min-h-80 h-auto flex justify-center items-center">
+            <label
+              htmlFor="logo-upload"
+              className="block text-3xl font-bold text-gray-800 mb-4 cursor-pointer">
+              Logo
+            </label>
+            <input type="file" accept="image/*" onChange={handleImageLogo} style={{ display: 'none' }} id="logo-upload" />
+            {imageLogo && (
+              <img src={imageLogo} alt="Preview" className="rounded-xl object-cover" style={{ width: '720px', height: '400px' }} />
+            )}
           </div>
-          <div className="form-control rounded-xl min-h-60 h-auto">
-            <label>Ảnh bìa sự kiện: </label>
-            <input type="file" accept="image/*" onChange={handleImageBia} />
+
+          <div className="form-control rounded-xl min-h-60 h-auto flex justify-center items-center">
+            <label htmlFor="cover-upload" className='block text-3xl font-bold text-gray-800 mb-4 cursor-pointer'>Ảnh bìa </label>
+            <input id='cover-upload' type="file" accept="image/*" onChange={handleImageBia} style={{ display: 'none' }} />
             {imageBia && (
               <img src={imageBia} alt="Preview" className='rounded-xl object-cover' style={{ width: '1280px', height: '400px' }} />
             )}

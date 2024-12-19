@@ -15,10 +15,11 @@ function Event() {
     const location = useLocation();
     const cate = location.state;
     const [eventCateId, setEventCate] = useState(cate?.cate?.id || '');
+    const [locationSelected, setLocationSelected] = useState(cate?.cate?.id || '');
 
     const SearchEventsData = async () => {
         try {
-            const res = await searchEvents(search, eventCateId);
+            const res = await searchEvents(search, eventCateId, locationSelected);
             setEvents(res.data.data);
         } catch {
             console.error('Failed to fetch events');
@@ -27,7 +28,7 @@ function Event() {
 
     useEffect(() => {
         SearchEventsData();
-    }, [search, eventCateId]);
+    }, [search, eventCateId, locationSelected]);
 
     return (
         <>
@@ -53,13 +54,13 @@ function Event() {
             <div className="container d-flex gap-10 min-h-[600px]">
                 <div className="w-[15%] bg-white mb-2 ">
                     <h2 className="text-lg font-semibold mb-4 text-gray-900">Sắp xếp theo</h2>
-                    
+
                     <div className="my-3">
                         <FilterCateEvent eventCate={eventCateId} setEventCate={setEventCate} />
                     </div>
 
                     <div className="my-3">
-                        <FilterCityEvent />
+                        <FilterCityEvent locationSelected={locationSelected} setLocationSelected={setLocationSelected} />
                     </div>
 
                     <img
@@ -73,7 +74,7 @@ function Event() {
                         src={Banner}
                         alt="Event"
                     />
-                   
+
                 </div>
                 <div className="w-[80%]">
                     <EventsListCard_2 events={events} />

@@ -4,9 +4,9 @@ const postHandlerBankTransfer = () => {
     return baseAPI.post('webhook-event-handler');
 }
 
-const postPaymentBooking = (totalPrice, description,email,phone) => {
+const postPaymentBooking = (totalPrice, description, email, phone) => {
 
-    console.log("Sending data:", { totalPrice, description,email,phone });
+    console.log("Sending data:", { totalPrice, description, email, phone });
 
     return baseAPI.post('payment', {
         amount: totalPrice,
@@ -20,7 +20,7 @@ const getInvoicesByUser = () => {
     return baseAPI.get('invoices');
 }
 
-const postTicket = ({name, price, event_id, invoice_id,quantity}) => {
+const postTicket = ({ name, price, event_id, invoice_id, quantity }) => {
     return baseAPI.post('create-ticket', {
         name,
         price,

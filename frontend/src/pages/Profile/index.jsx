@@ -17,10 +17,15 @@ function Profile() {
     const [avatar, setAvatar] = useState(AvatarDefault);
 
     useEffect(() => {
+
         setEmail(account.account.email)
         setName(account.account.name)
         setPhone(account.account.phone)
+
+       
     }, [account])
+
+    
 
     const handleImageAvatar = (e) => {
         const file = e.target.files[0];

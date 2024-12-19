@@ -23,6 +23,7 @@ class Event extends Model
         'policy',
         'status',
         'event_cate_id', 
+        'location_id', 
     ];
 
     public function user()
